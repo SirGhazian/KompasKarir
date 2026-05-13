@@ -41,7 +41,7 @@ export default function LandingPage() {
 
       <main className="flex-1">
         {/* --- hero section --- */}
-        <section className="relative overflow-hidden bg-white">
+        <section className="relative flex h-svh flex-col items-center justify-center overflow-hidden bg-white mt-[-72px] pt-[72px]">
           {/* dekorasi latar belakang */}
           <div className="absolute inset-0 -z-10 bg-hero-radial" />
           <MixSquareCircleQuarter
@@ -53,7 +53,7 @@ export default function LandingPage() {
             color="var(--color-secondary)"
           />
 
-          <div className="mx-auto max-w-7xl px-6 pb-24 pt-20 md:px-12 md:pb-32 md:pt-28">
+          <div className="mx-auto max-w-7xl px-6 md:px-12 relative z-10">
             <div className="flex flex-col items-center text-center">
               {/* judul utama */}
               <h1 className="mb-6 max-w-4xl text-4xl font-extrabold leading-tight tracking-tight text-[#0b1c30] md:text-6xl lg:text-7xl font-headline">
