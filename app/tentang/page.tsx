@@ -356,7 +356,7 @@ export default function TentangPage() {
 
                   {/* panah */}
                   {idx < tahap.length - 1 && (
-                    <div className="flex items-center justify-center md:flex-shrink-0">
+                    <div className="flex items-center justify-center md:shrink-0">
                       <FaArrowRight size={20} className="rotate-90 text-[#c6c6cd] md:rotate-0" />
                     </div>
                   )}

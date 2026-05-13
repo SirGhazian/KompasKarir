@@ -37,7 +37,7 @@ export default function Accordion({ question, answer }: AccordionProps) {
           {question}
         </span>
         <span
-          className={`ml-4 flex-shrink-0 transition-transform duration-500 text-[#006a61] ${
+          className={`ml-4 shrink-0 transition-transform duration-500 text-[#006a61] ${
             isOpen ? "rotate-180" : ""
           }`}
         >
