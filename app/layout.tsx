@@ -16,8 +16,7 @@ const lexend = Lexend({
 
 export const metadata: Metadata = {
   title: "KompasKarir",
-  description:
-    "KompasKarir membantu kamu menemukan jurusan kuliah dan jalur karier yang tepat melalui asesmen kepribadian RIASEC berbasis AI.",
+  description: "A Capstone Project by PSU305",
 };
 
 export default function RootLayout({
