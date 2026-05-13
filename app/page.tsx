@@ -31,7 +31,6 @@ const steps = [
 ];
 
 // --- landing page ---
-
 export default function LandingPage() {
   return (
     <>
@@ -69,7 +68,7 @@ export default function LandingPage() {
 
               {/* tombol cta */}
               <div className="flex flex-col items-center gap-4 sm:flex-row">
-                <Button href="#" variant="primary" size="md" className="group">
+                <Button href="/instruksi" variant="primary" size="md" className="group">
                   Mulai Tes Sekarang
                   <FaArrowRight
                     className="transition-transform group-hover:translate-x-1"
@@ -144,7 +143,7 @@ export default function LandingPage() {
                   Ribuan pelajar telah menggunakan KompasKarir untuk menemukan jurusan dan karier
                   impian mereka. Kini giliranmu.
                 </p>
-                <Button href="#" variant="primary" size="lg">
+                <Button href="/instruksi" variant="primary" size="lg">
                   Mulai Tes Gratis
                   <FaArrowRight size={16} />
                 </Button>
