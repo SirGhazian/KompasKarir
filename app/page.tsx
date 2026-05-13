@@ -1,86 +1,29 @@
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import Button from "@/components/ui/Button";
+import { FaArrowRight, FaRegClock } from "react-icons/fa";
+import { LuChartNoAxesCombined } from "react-icons/lu";
+import { VscCompassActive } from "react-icons/vsc";
+import { IoDocumentTextOutline } from "react-icons/io5";
 
 const steps = [
   {
     number: "01",
-    icon: (
-      <svg
-        width="40"
-        height="40"
-        viewBox="0 0 24 24"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          d="M9 12h6M9 16h4M4 4h16a1 1 0 011 1v14a1 1 0 01-1 1H4a1 1 0 01-1-1V5a1 1 0 011-1z"
-          stroke="currentColor"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-        <path d="M8 4v2M16 4v2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-        <circle cx="9" cy="8.5" r="0.75" fill="currentColor" />
-        <circle cx="12" cy="8.5" r="0.75" fill="currentColor" />
-        <circle cx="15" cy="8.5" r="0.75" fill="currentColor" />
-      </svg>
-    ),
+    icon: <IoDocumentTextOutline size={40} />,
     title: "Ikuti Tes",
     description:
       "Jawab serangkaian pertanyaan singkat dan jujur mengenai preferensi aktivitas dan lingkungan kerjamu.",
   },
   {
     number: "02",
-    icon: (
-      <svg
-        width="40"
-        height="40"
-        viewBox="0 0 24 24"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          d="M3 3v18h18"
-          stroke="currentColor"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-        <path
-          d="M7 14l4-4 3 3 5-6"
-          stroke="currentColor"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </svg>
-    ),
+    icon: <LuChartNoAxesCombined size={40} />,
     title: "Lihat Hasil",
     description:
       "Dapatkan analisis instan mengenai profil RIASEC-mu (Realistic, Investigative, Artistic, Social, Enterprising, Conventional).",
   },
   {
     number: "03",
-    icon: (
-      <svg
-        width="40"
-        height="40"
-        viewBox="0 0 24 24"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.5" />
-        <path
-          d="M12 3v2M12 19v2M3 12h2M19 12h2"
-          stroke="currentColor"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-        />
-        <path d="M12 8l2 4-4 2 2-6z" fill="currentColor" fillOpacity="0.7" />
-        <circle cx="12" cy="12" r="1.5" fill="currentColor" />
-      </svg>
-    ),
+    icon: <VscCompassActive size={40} />,
     title: "Temukan Jurusan",
     description:
       "Eksplorasi rekomendasi jurusan kuliah dan jalur karier yang selaras dengan tipe kepribadian dominanmu.",
@@ -120,23 +63,7 @@ export default function LandingPage() {
 
               {/* estimasi waktu */}
               <div className="mb-10 flex items-center gap-2 text-sm font-medium text-[#45464d] font-sans">
-                <svg
-                  width="18"
-                  height="18"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="text-[#006a61]"
-                >
-                  <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.5" />
-                  <path
-                    d="M12 7v5l3 3"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
+                <FaRegClock className="text-[#006a61]" size={18} />
                 <span>Estimasi waktu: 10–15 menit</span>
               </div>
 
@@ -144,22 +71,10 @@ export default function LandingPage() {
               <div className="flex flex-col items-center gap-4 sm:flex-row">
                 <Button href="#" variant="primary" size="md" className="group">
                   Mulai Tes Sekarang
-                  <svg
-                    width="18"
-                    height="18"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
+                  <FaArrowRight
                     className="transition-transform group-hover:translate-x-1"
-                  >
-                    <path
-                      d="M5 12h14M12 5l7 7-7 7"
-                      stroke="white"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
+                    size={16}
+                  />
                 </Button>
 
                 <Button href="#cara-kerja" variant="secondary" size="md">
@@ -197,9 +112,7 @@ export default function LandingPage() {
                   </div>
 
                   {/* ikon */}
-                  <div
-                    className="mb-5 mt-4 flex h-16 w-16 items-center justify-center rounded-2xl text-[#006a61] transition-colors group-hover:text-[#009688] bg-[#e5f7f5]"
-                  >
+                  <div className="mb-5 mt-4 flex h-16 w-16 items-center justify-center rounded-2xl text-[#006a61] transition-colors group-hover:text-[#009688] bg-[#e5f7f5]">
                     {step.icon}
                   </div>
 
@@ -220,12 +133,8 @@ export default function LandingPage() {
         <section className="py-20 md:py-28">
           <div className="mx-auto max-w-7xl px-6 md:px-12">
             <div className="relative overflow-hidden rounded-3xl p-10 text-center md:p-16 bg-dark-gradient">
-              <div
-                className="absolute -right-16 -top-16 h-64 w-64 rounded-full opacity-20 bg-[#009688]"
-              />
-              <div
-                className="absolute -bottom-20 -left-20 h-72 w-72 rounded-full opacity-10 bg-[#86f2e4]"
-              />
+              <div className="absolute -right-16 -top-16 h-64 w-64 rounded-full opacity-20 bg-[#009688]" />
+              <div className="absolute -bottom-20 -left-20 h-72 w-72 rounded-full opacity-10 bg-[#86f2e4]" />
 
               <div className="relative z-10">
                 <h2 className="mb-4 text-3xl font-extrabold tracking-tight text-white md:text-4xl font-headline">
@@ -237,21 +146,7 @@ export default function LandingPage() {
                 </p>
                 <Button href="#" variant="primary" size="lg">
                   Mulai Tes Gratis
-                  <svg
-                    width="18"
-                    height="18"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M5 12h14M12 5l7 7-7 7"
-                      stroke="white"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
+                  <FaArrowRight size={16} />
                 </Button>
               </div>
             </div>

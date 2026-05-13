@@ -1,4 +1,6 @@
 import Button from "@/components/ui/Button";
+import { FaArrowRight } from "react-icons/fa";
+import { VscCompassActive } from "react-icons/vsc";
 
 export default function Navbar() {
   const navLinks = [
@@ -12,21 +14,8 @@ export default function Navbar() {
       <div className="mx-auto flex h-[72px] max-w-7xl items-center justify-between px-6 md:px-12">
         {/* logo */}
         <a href="#" className="flex items-center gap-2 group">
-          {/* ikon kompas (masih inline, mau nyoba pake reacticon, tapi tar aku coba tanya fasilitator dulu) */}
           <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-teal-gradient">
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              className="text-white"
-            >
-              <circle cx="12" cy="12" r="10" stroke="white" strokeWidth="2" />
-              <polygon points="12,4 15,12 12,20 9,12" fill="white" fillOpacity="0.3" />
-              <polygon points="12,4 15,12 9,12" fill="white" />
-              <circle cx="12" cy="12" r="1.5" fill="white" />
-            </svg>
+            <VscCompassActive className="text-white" size={20} />
           </div>
           <span className="text-xl font-extrabold tracking-tight text-[#0b1c30] group-hover:text-[#006a61] transition-colors font-headline">
             KompasKarir
@@ -52,21 +41,7 @@ export default function Navbar() {
 
           {/* tombol cta */}
           <Button href="#" variant="primary" size="sm" className="ml-2">
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M5 12h14M12 5l7 7-7 7"
-                stroke="white"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
+            <FaArrowRight size={12} />
             Mulai Tes
           </Button>
         </nav>
