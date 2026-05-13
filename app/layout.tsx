@@ -16,8 +16,7 @@ const lexend = Lexend({
 
 export const metadata: Metadata = {
   title: "KompasKarir",
-  description:
-    "KompasKarir membantu kamu menemukan jurusan kuliah dan jalur karier yang tepat melalui asesmen kepribadian RIASEC berbasis AI.",
+  description: "A Capstone Project by PSU305",
 };
 
 export default function RootLayout({
@@ -26,7 +25,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="id" data-scroll-behavior="smooth" className={`${manrope.variable} ${lexend.variable} h-full antialiased`}>
+    <html
+      lang="id"
+      data-scroll-behavior="smooth"
+      className={`${manrope.variable} ${lexend.variable} h-full antialiased`}
+    >
       <body className="min-h-full flex flex-col bg-[#f8f9ff] text-[#0b1c30]">{children}</body>
     </html>
   );
