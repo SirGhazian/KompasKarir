@@ -92,7 +92,7 @@ export default function LandingPage() {
               <h2 className="max-w-lg text-3xl font-extrabold tracking-tight text-[#0b1c30] md:text-4xl font-headline">
                 Cara Kerja
               </h2>
-              <div className="mt-3 h-1 w-16 rounded-full bg-gradient-to-r from-[#006a61] to-[#009688]" />
+              <div className="mt-3 h-1 w-16 rounded-full bg-linear-to-r from-[#006a61] to-[#009688]" />
               <p className="mt-4 max-w-md text-base text-[#45464d] font-sans">
                 Hanya tiga langkah mudah untuk menemukan jalur yang tepat bagimu.
               </p>
