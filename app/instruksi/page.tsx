@@ -53,7 +53,7 @@ export default function InstruksiPage() {
               {panduan.map((item) => (
                 <li key={item.nomor} className="flex items-start gap-4">
                   {/* nomor */}
-                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-teal-gradient text-sm font-extrabold text-white font-headline">
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-secondary text-sm font-extrabold text-white font-headline">
                     {item.nomor}
                   </span>
                   {/* teks */}
@@ -98,7 +98,7 @@ export default function InstruksiPage() {
           </div>
 
           <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
-            <Button href="/about" variant="secondary" size="md">
+            <Button href="/tentang" variant="secondary" size="md">
               <FaBookOpen size={16} />
               Pelajari Tentang RIASEC
             </Button>

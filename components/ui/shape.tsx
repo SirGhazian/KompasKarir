@@ -1,0 +1,36 @@
+import React from "react";
+
+interface ShapeProps {
+  className?: string;
+  color?: string;
+}
+
+export const MixSquareCircleQuarter = ({ className, color = "currentColor" }: ShapeProps) => (
+  <svg
+    viewBox="0 0 480 480"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    className={className}
+    style={{ color }}
+  >
+    <path
+      d="M0 0h230c138 0 250 112 250 250v230H250C112 480 0 368 0 230V0Z"
+      fill="currentColor"
+    />
+  </svg>
+);
+
+export const CircleInCircle = ({ className, color = "currentColor" }: ShapeProps) => (
+  <svg
+    viewBox="0 0 480 480"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    className={className}
+    style={{ color }}
+  >
+    <g fill="currentColor">
+      <path d="M240 0a240 240 0 1 0 0 480 240 240 0 0 0 0-480Zm0 400a160 160 0 1 1 0-320 160 160 0 0 1 0 320Z" />
+      <circle cx="240" cy="240" r="80" />
+    </g>
+  </svg>
+);

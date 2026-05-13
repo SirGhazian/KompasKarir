@@ -21,7 +21,7 @@ export default function Button({
   const baseStyles = 'inline-flex items-center justify-center font-semibold transition-all duration-200 active:scale-95 font-sans';
   
   const variants = {
-    primary: 'bg-teal-gradient text-white shadow-[0_4px_14px_rgba(0,106,97,0.35)] hover:scale-105 hover:shadow-lg',
+    primary: 'bg-secondary text-white hover:bg-secondary-dim',
     secondary: 'border-2 border-[#c6c6cd] bg-white text-[#0b1c30] hover:border-[#006a61] hover:text-[#006a61]',
   };
   
