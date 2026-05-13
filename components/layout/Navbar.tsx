@@ -13,7 +13,7 @@ export default function Navbar() {
     <header className="sticky top-0 z-50 w-full bg-white/80 backdrop-blur-md shadow-nav">
       <div className="mx-auto flex h-[72px] max-w-7xl items-center justify-between px-6 md:px-12">
         {/* logo */}
-        <a href="#" className="flex items-center gap-2 group">
+        <a href="/" className="flex items-center gap-2 group">
           <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-teal-gradient">
             <VscCompassActive className="text-white" size={20} />
           </div>
@@ -40,7 +40,7 @@ export default function Navbar() {
           ))}
 
           {/* tombol cta */}
-          <Button href="#" variant="primary" size="sm" className="ml-2">
+          <Button href="/instruksi" variant="primary" size="sm" className="ml-2">
             <FaArrowRight size={12} />
             Mulai Tes
           </Button>
