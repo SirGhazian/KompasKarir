@@ -53,7 +53,7 @@ export default function QuizPage() {
             {/* track */}
             <div className="h-2.5 w-full overflow-hidden rounded-full bg-[#e5eeff]">
               <div
-                className="h-full rounded-full bg-teal-gradient transition-all duration-500"
+                className="h-full rounded-full bg-secondary transition-all duration-500"
                 style={{ width: `${progressPercent}%` }}
               />
             </div>
@@ -92,11 +92,11 @@ export default function QuizPage() {
                   <button
                     key={nilai}
                     onClick={() => setSelectedAnswer(nilai)}
-                    className={`flex h-14 items-center justify-center rounded-2xl border-2 transition-all duration-200 font-headline cursor-pointer
+                    className={`flex h-14 items-center justify-center rounded-2xl transition-all duration-100 font-headline cursor-pointer
                       ${
                         isSelected
-                          ? "border-[#006a61] bg-[#e5f7f5] text-[#006a61]"
-                          : "border-[#c6c6cd] bg-white text-[#0b1c30] hover:border-[#006a61] hover:text-[#006a61]"
+                          ? "border-2 border-[#006a61] bg-[#e5f7f5] text-[#006a61]"
+                          : "border border-[#c6c6cd] bg-white text-[#0b1c30] hover:border-2 hover:border-[#006a61] hover:text-[#006a61]"
                       }`}
                   >
                     <span className="text-lg font-bold">{nilai}</span>
@@ -135,7 +135,7 @@ export default function QuizPage() {
                 ${
                   isLast
                     ? "cursor-not-allowed bg-[#c6c6cd] text-white"
-                    : "cursor-pointer bg-teal-gradient text-white shadow-[0_4px_14px_rgba(0,106,97,0.35)] active:scale-95"
+                    : "cursor-pointer bg-secondary hover:bg-secondary-dim text-white active:scale-95"
                 }`}
             >
               Selanjutnya

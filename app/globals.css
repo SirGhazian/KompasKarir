@@ -27,6 +27,7 @@
 
   /* secondary (teal) */
   --color-secondary: #006a61;
+  --color-secondary-dim: #008f83;
   --color-on-secondary: #ffffff;
   --color-secondary-container: #86f2e4;
   --color-on-secondary-container: #006f66;
@@ -64,7 +65,7 @@
     transparent 60%
   );
 
-  /* Shadows */
+  /* shadows */
   --shadow-nav: 0px 2px 12px rgba(15, 23, 42, 0.08);
   --shadow-card: 0px 4px 20px rgba(15, 23, 42, 0.07);
 
@@ -82,6 +83,7 @@
   --color-primary: var(--color-primary);
   --color-on-primary: var(--color-on-primary);
   --color-secondary: var(--color-secondary);
+  --color-secondary-dim: var(--color-secondary-dim);
   --color-on-secondary: var(--color-on-secondary);
   --color-secondary-container: var(--color-secondary-container);
   --color-on-secondary-container: var(--color-on-secondary-container);
@@ -89,7 +91,7 @@
   --color-primary-fixed-dim: var(--color-primary-fixed-dim);
 }
 
-/* gaya dasar */
+/* basic */
 *,
 *::before,
 *::after {
