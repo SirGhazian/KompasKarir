@@ -94,7 +94,7 @@ export default function UlasanPage() {
                 <div className="flex items-center gap-1 mb-4">
                   <FaStar size={16} className="text-amber-400" />
                 </div>
-                <p className="font-body-md text-body-md text-on-surface-variant mb-6 flex-grow">"{testimoni.text}"</p>
+                <p className="font-body-md text-body-md text-on-surface-variant mb-6 flex-grow">{testimoni.text}</p>
                 <div className="flex flex-col mt-auto pt-4 border-t border-outline-variant/20">
                   <span className="font-label-lg text-label-lg text-on-surface">{testimoni.name}</span>
                   <span className="font-body-sm text-body-sm text-on-surface-variant">{testimoni.role}</span>
