@@ -10,7 +10,7 @@ import { VscCompassActive } from "react-icons/vsc";
 const navLinks = [
   { label: "Beranda", href: "/" },
   { label: "Tentang", href: "/tentang" },
-  { label: "Ulasan", href: "#" },
+  { label: "Ulasan", href: "/ulasan" },
 ];
 
 // --- navbar ---
