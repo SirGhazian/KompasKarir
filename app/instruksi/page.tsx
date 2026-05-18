@@ -1,6 +1,7 @@
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import Button from "@/components/ui/Button";
+import Badge from "@/components/ui/Badge";
 import { FaArrowRight, FaBookOpen } from "react-icons/fa";
 import { BsCheckCircleFill } from "react-icons/bs";
 
@@ -32,10 +33,15 @@ export default function InstruksiPage() {
         <div className="mx-auto max-w-3xl px-6 md:px-12">
           {/* --- header --- */}
           <div className="mb-12 text-center">
-            <span className="mb-4 inline-flex items-center gap-2 rounded-full bg-[#e5f7f5] px-4 py-1.5 text-sm font-semibold text-[#006a61] font-sans">
+            <Badge
+              variant="category"
+              size="md"
+              colorClass="bg-[#e5f7f5] text-[#006a61]"
+              className="mb-4"
+            >
               <BsCheckCircleFill size={14} />
               Persiapan Tes RIASEC
-            </span>
+            </Badge>
             <h1 className="mt-4 text-4xl font-extrabold tracking-tight text-[#0b1c30] md:text-5xl font-headline">
               Sebelum Memulai Tes
             </h1>
