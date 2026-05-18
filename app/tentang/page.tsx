@@ -2,6 +2,7 @@ import React, { Fragment } from "react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import Button from "@/components/ui/Button";
+import Badge from "@/components/ui/Badge";
 import { FaArrowRight } from "react-icons/fa";
 import { HiAcademicCap } from "react-icons/hi2";
 import { MixSquareCircleQuarter, CircleInCircle } from "@/components/ui/shape";
@@ -115,10 +116,15 @@ export default function TentangPage() {
             <div className="grid grid-cols-1 gap-12 md:grid-cols-2 md:items-stretch">
               {/* teks utama */}
               <div className="py-20 md:py-32">
-                <span className="mb-4 inline-flex items-center gap-2 rounded-full bg-[#e5f7f5] px-4 py-1.5 text-sm font-semibold text-[#006a61] font-sans">
+                <Badge
+                  variant="category"
+                  size="md"
+                  colorClass="bg-[#e5f7f5] text-[#006a61]"
+                  className="mb-4"
+                >
                   <HiAcademicCap size={16} />
                   Teori Holland
-                </span>
+                </Badge>
                 <h1 className="mt-4 text-4xl font-extrabold tracking-tight text-[#0b1c30] md:text-5xl font-headline">
                   Tentang Metode <span className="text-secondary">RIASEC</span>
                 </h1>
@@ -275,11 +281,9 @@ export default function TentangPage() {
                   </span>
 
                   {/* label kategori */}
-                  <span
-                    className={`mb-4 inline-block w-fit rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wider font-sans ${d.warnaBadge}`}
-                  >
+                  <Badge variant="category" colorClass={d.warnaBadge} className="mb-4">
                     {d.label}
-                  </span>
+                  </Badge>
 
                   {/* deskripsi */}
                   <p className="text-sm leading-relaxed text-[#45464d] font-sans">{d.deskripsi}</p>
@@ -291,12 +295,9 @@ export default function TentangPage() {
                     </p>
                     <div className="flex flex-wrap gap-2">
                       {d.jurusan.map((k) => (
-                        <span
-                          key={k}
-                          className="rounded-full bg-[#f8f9ff] px-3 py-1 text-xs font-medium text-[#45464d] font-sans"
-                        >
+                        <Badge key={k} variant="chip">
                           {k}
-                        </span>
+                        </Badge>
                       ))}
                     </div>
                   </div>
@@ -335,11 +336,12 @@ export default function TentangPage() {
                     }`}
                   >
                     {/* label */}
-                    <p
-                      className={`mb-3 text-[10px] font-bold uppercase tracking-widest font-sans ${t.solid ? "text-[#86f2e4]" : "text-[#006a61]"}`}
+                    <Badge
+                      variant="label"
+                      className={`mb-3 ${t.solid ? "text-[#86f2e4]" : "text-[#006a61]"}`}
                     >
                       {t.label}
-                    </p>
+                    </Badge>
                     {/* judul */}
                     <h3
                       className={`mb-3 text-2xl font-extrabold font-headline ${t.solid ? "text-white" : "text-[#0b1c30]"}`}
@@ -374,9 +376,9 @@ export default function TentangPage() {
           />
 
           <div className="mx-auto max-w-2xl px-6 text-center md:px-12 relative z-10">
-            <p className="mb-4 text-[10px] font-bold uppercase tracking-widest text-[#006a61] font-sans">
+            <Badge variant="label" className="mb-4">
               Referensi Akademik
-            </p>
+            </Badge>
             <p className="mb-4 text-sm italic leading-relaxed text-[#45464d] font-sans">
               Holland, J. L. (1997).{" "}
               <em>
