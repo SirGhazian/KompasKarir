@@ -6,6 +6,7 @@ import Footer from "@/components/layout/Footer";
 import Button from "@/components/ui/Button";
 import Select from "@/components/ui/Select";
 import Pagination from "@/components/ui/Pagination";
+import ReviewModal from "@/components/ui/ReviewModal";
 import { FaMapMarkerAlt, FaMoneyBillWave } from "react-icons/fa";
 
 // --- data dummy jurusan ---
@@ -75,6 +76,7 @@ export default function RekomendasiPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [lokasi, setLokasi] = useState("");
   const [biaya, setBiaya] = useState("");
+  const [showReview, setShowReview] = useState(false);
 
   // data per halaman
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
@@ -181,18 +183,46 @@ export default function RekomendasiPage() {
                 </div>
               ))}
             </div>
-          </div>
 
-          {/* --- pagination --- */}
-          <div className="mt-10">
-            <Pagination
-              currentPage={currentPage}
-              totalPages={totalPages}
-              onPageChange={setCurrentPage}
-            />
+            {/* --- pagination --- */}
+            <div className="mt-10">
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={setCurrentPage}
+              />
+            </div>
+          </div>
+        </section>
+
+        {/* --- section beri ulasan --- */}
+        <section className="bg-[#e5f7f5] py-14 md:py-20">
+          <div className="mx-auto max-w-6xl px-4 md:px-8">
+            <div className="relative overflow-hidden rounded-3xl bg-[#006a61] p-10 text-center md:p-14">
+              <div className="absolute -right-16 -top-16 h-64 w-64 rounded-full opacity-10 bg-white" />
+              <div className="absolute -bottom-20 -left-20 h-72 w-72 rounded-full opacity-10 bg-white" />
+              <div className="relative z-10">
+                <h3 className="mb-3 text-2xl font-extrabold tracking-tight text-white md:text-3xl font-headline">
+                  Bagaimana Pengalamanmu?
+                </h3>
+                <p className="mb-6 mx-auto max-w-md text-base text-[#86f2e4] font-sans">
+                  Bantu kami menjadi lebih baik dengan memberikan ulasan singkat tentang
+                  pengalamanmu.
+                </p>
+                <button
+                  onClick={() => setShowReview(true)}
+                  className="inline-flex cursor-pointer items-center justify-center gap-2.5 rounded-2xl border-2 border-white bg-white px-8 py-4 text-base font-semibold text-[#006a61] transition-all duration-200 hover:bg-transparent hover:text-white active:scale-95 font-sans"
+                >
+                  Beri Ulasan
+                </button>
+              </div>
+            </div>
           </div>
         </section>
       </main>
+
+      {/* modal ulasan */}
+      <ReviewModal isOpen={showReview} onClose={() => setShowReview(false)} />
 
       <Footer />
     </>
