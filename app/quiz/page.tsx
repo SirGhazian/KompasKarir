@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import NilaiForm, { type NilaiAkademik } from "@/components/ui/NilaiForm";
@@ -30,6 +31,7 @@ const nilaiAwal: NilaiAkademik = {
 
 // --- halaman quiz ---
 export default function QuizPage() {
+  const router = useRouter();
   const [currentIndex, setCurrentIndex] = useState(0);
   // simpan jawaban per soal: key = index soal, value = angka 1-5
   const [answers, setAnswers] = useState<Record<number, number>>({});
@@ -74,11 +76,12 @@ export default function QuizPage() {
     setNilai((prev) => ({ ...prev, [key]: value }));
   }
 
-  // --- submit akhir (belum ada logika, placeholder) ---
+  // --- submit akhir ---
   function handleSubmit() {
     // TODO: kirim { answers, nilai } ke backend
     console.log("Jawaban quiz:", answers);
     console.log("Nilai akademik:", nilai);
+    router.push("/hasil");
   }
 
   return (
