@@ -2,6 +2,11 @@ const Joi = require("joi");
 
 // schema validasi untuk POST /api/reviews
 const reviewSchema = Joi.object({
+  nama: Joi.string().max(100).required().messages({
+    "string.max": "Nama maksimal 100 karakter",
+    "any.required": "Field nama wajib diisi",
+  }),
+
   rating: Joi.number().integer().min(1).max(5).required().messages({
     "number.min": "Rating minimal 1",
     "number.max": "Rating maksimal 5",
