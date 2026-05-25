@@ -7,6 +7,7 @@ import Footer from "@/components/layout/Footer";
 import NilaiForm, { type NilaiAkademik } from "@/components/ui/NilaiForm";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import { quizQuestions, totalQuestions } from "@/utils/quizData";
+import { submitPrediction } from "@/utils/api";
 
 // --- konstanta ---
 const skalaOptions = [1, 2, 3, 4, 5];
@@ -62,7 +63,7 @@ export default function QuizPage() {
     if (!isLastQuiz) {
       setCurrentIndex((i) => i + 1);
     } else {
-      // soal terakhir → lanjut ke form nilai
+      // soal terakhir ---> lanjut ke form nilai
       setCurrentIndex(STEP_NILAI);
     }
   }
@@ -77,11 +78,21 @@ export default function QuizPage() {
   }
 
   // --- submit akhir ---
-  function handleSubmit() {
-    // TODO: kirim { answers, nilai } ke backend
-    console.log("Jawaban quiz:", answers);
-    console.log("Nilai akademik:", nilai);
-    router.push("/hasil");
+  async function handleSubmit() {
+    try {
+      // konversi nilai string ke number
+      const nilaiNum = Object.fromEntries(
+        Object.entries(nilai).map(([k, v]) => [k, Number(v)]),
+      ) as Record<string, number>;
+
+      const result = await submitPrediction(answers, nilaiNum);
+      // simpan id hasil untuk halaman hasil
+      localStorage.setItem("kk_prediction_id", result.id);
+      router.push("/hasil");
+    } catch (err) {
+      console.error("Gagal submit:", err);
+      alert("Terjadi kesalahan saat mengirim data. Coba lagi.");
+    }
   }
 
   return (
