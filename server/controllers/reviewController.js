@@ -11,7 +11,7 @@ async function createReview(req, res, next) {
       return res.status(400).json({ error: error.details[0].message });
     }
 
-    const { rating, text } = value;
+    const { nama, rating, text } = value;
     const { sessionId } = req.session;
     const userAgent = req.headers["user-agent"] || "unknown";
 
@@ -27,6 +27,7 @@ async function createReview(req, res, next) {
     // simpan ke firestore databasee
     const docRef = await addDoc(reviewsRef, {
       sessionId,
+      nama,
       rating,
       text,
       userAgent,
@@ -65,4 +66,23 @@ async function getReviews(req, res, next) {
   }
 }
 
-module.exports = { createReview, getReviews };
+// GET /api/reviews/me --- cek apakah session ini sudah pernah review
+async function getMyReview(req, res, next) {
+  try {
+    const { sessionId } = req.session;
+    const reviewsRef = collection(db, "reviews");
+    const q = query(reviewsRef, where("sessionId", "==", sessionId));
+    const snapshot = await getDocs(q);
+
+    if (snapshot.empty) {
+      return res.status(404).json({ exists: false });
+    }
+
+    const doc = snapshot.docs[0];
+    res.json({ exists: true, review: { id: doc.id, ...doc.data() } });
+  } catch (err) {
+    next(err);
+  }
+}
+
+module.exports = { createReview, getReviews, getMyReview };
