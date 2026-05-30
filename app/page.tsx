@@ -87,7 +87,7 @@ export default function LandingPage() {
                   />
                 </Button>
 
-                <Button href="#cara-kerja" variant="secondary" size="md">
+                <Button href="/tentang" variant="secondary" size="md">
                   Pelajari Lebih Lanjut
                 </Button>
               </div>
@@ -173,11 +173,6 @@ export default function LandingPage() {
                   yang telah divalidasi secara luas untuk membantu individu menyelaraskan jurusan
                   impian dengan karakter asli mereka.
                 </p>
-                <div className="mt-8">
-                  <Button href="/instruksi" variant="primary" size="md">
-                    Coba Tes Sekarang
-                  </Button>
-                </div>
               </div>
 
               {/* kanan: grid alasan */}
