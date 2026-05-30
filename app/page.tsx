@@ -41,7 +41,7 @@ export default function LandingPage() {
 
       <main className="flex-1">
         {/* --- hero section --- */}
-        <section className="relative flex h-svh flex-col items-center justify-center overflow-hidden bg-white mt-[-72px] pt-[72px]">
+        <section className="relative flex min-h-svh flex-col items-center justify-center overflow-hidden bg-white mt-[-72px] pt-[72px] pb-10 md:pb-0">
           {/* dekorasi latar belakang */}
           <div className="absolute inset-0 -z-10 bg-hero-radial" />
           <MixSquareCircleQuarter
@@ -101,11 +101,12 @@ export default function LandingPage() {
               </div>
 
               {/* kolom kanan: gambar hero */}
-              <div className="hidden md:flex items-center justify-center">
+              <div className="flex items-center justify-center">
                 <img
                   src="/images/hero-header.png"
                   alt="Ilustrasi KompasKarir"
                   className="w-full max-w-lg"
+                  draggable={false}
                 />
               </div>
             </div>
