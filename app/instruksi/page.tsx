@@ -8,9 +8,9 @@ import { BsCheckCircleFill } from "react-icons/bs";
 // --- data panduan ---
 const panduan = [
   { nomor: "01", teks: "Jawab setiap pertanyaan dengan jujur sesuai kondisi dirimu saat ini." },
-  { nomor: "02", teks: "Tidak ada jawaban benar atau salah — semua pilihan adalah valid." },
+  { nomor: "02", teks: "Tidak ada jawaban benar atau salah, semua pilihan adalah valid." },
   { nomor: "03", teks: "Gunakan skala 1–5 dari Sangat Tidak Setuju hingga Sangat Setuju." },
-  { nomor: "04", teks: "Tes ini terdiri dari 99 pertanyaan yang mencakup 6 dimensi kepribadian." },
+  { nomor: "04", teks: "Tes ini terdiri dari 72 pertanyaan yang mencakup 6 dimensi kepribadian." },
   { nomor: "05", teks: "Pastikan kamu dalam kondisi tenang dan tidak terburu-buru." },
 ];
 

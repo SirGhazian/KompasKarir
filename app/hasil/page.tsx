@@ -163,7 +163,7 @@ export default function HasilPage() {
           <div className="mt-10 flex flex-col items-center justify-between gap-4 sm:flex-row">
             {/* kiri */}
             <div className="flex flex-col gap-3 sm:flex-row">
-              <Button href="/hasil/detail" variant="secondary" size="md">
+              <Button href="/tentang" variant="secondary" size="md">
                 <FaBookOpen size={16} />
                 Pelajari Lebih Lanjut
               </Button>

@@ -54,42 +54,59 @@ export default function LandingPage() {
           />
 
           <div className="mx-auto max-w-7xl px-6 md:px-12 relative z-10">
-            <div className="flex flex-col items-center text-center">
-              {/* judul utama */}
-              <h1 className="mb-6 max-w-4xl text-4xl font-extrabold leading-tight tracking-tight text-[#0b1c30] md:text-6xl lg:text-7xl font-headline">
-                Temukan{" "}
-                <span className="relative inline-block text-secondary">
-                  Jurusan &amp; Pendidikan
-                </span>{" "}
-                yang Tepat Untukmu
-              </h1>
+            <div className="grid grid-cols-1 items-center gap-10 md:grid-cols-2">
+              {/* kolom kiri: teks */}
+              <div className="flex flex-col items-center text-center md:items-start md:text-left">
+                {/* judul utama */}
+                <h1 className="mb-6 max-w-xl text-3xl font-extrabold leading-tight tracking-tight text-[#0b1c30] md:text-4xl lg:text-5xl font-headline">
+                  Temukan{" "}
+                  <span className="relative inline-block text-secondary">
+                    Jurusan &amp; Pendidikan
+                    <img
+                      src="/images/underline.png"
+                      alt=""
+                      className="absolute left-0 -bottom-1 w-full h-1.5 pointer-events-none select-none"
+                    />
+                  </span>{" "}
+                  yang Tepat Untukmu
+                </h1>
 
-              {/* deskripsi */}
-              <p className="mb-10 max-w-2xl text-lg leading-relaxed text-[#45464d] md:text-xl font-sans">
-                Pahami minat dan potensimu melalui asesmen RIASEC yang komprehensif. Dapatkan
-                rekomendasi jalur pendidikan dan peminatan jurusan yang sesuai dengan kepribadian
-                unikmu.
-              </p>
+                {/* deskripsi */}
+                <p className="mb-8 max-w-lg text-lg leading-relaxed text-[#45464d] font-sans">
+                  Pahami minat dan potensimu melalui asesmen RIASEC yang komprehensif. Dapatkan
+                  rekomendasi jalur pendidikan dan peminatan jurusan yang sesuai dengan kepribadian
+                  unikmu.
+                </p>
 
-              {/* estimasi waktu */}
-              <div className="mb-10 flex items-center gap-2 text-sm font-medium text-[#45464d] font-sans">
-                <FaRegClock className="text-[#006a61]" size={18} />
-                <span>Estimasi waktu: 10–15 menit</span>
+                {/* estimasi waktu */}
+                <div className="mb-8 flex items-center gap-2 text-sm font-medium text-[#45464d] font-sans">
+                  <FaRegClock className="text-[#006a61]" size={18} />
+                  <span>Estimasi waktu: 10–15 menit</span>
+                </div>
+
+                {/* tombol cta */}
+                <div className="flex flex-col items-center gap-4 sm:flex-row">
+                  <Button href="/instruksi" variant="primary" size="md" className="group">
+                    Mulai Tes Sekarang
+                    <FaArrowRight
+                      className="transition-transform group-hover:translate-x-1"
+                      size={16}
+                    />
+                  </Button>
+
+                  <Button href="/tentang" variant="secondary" size="md">
+                    Pelajari Lebih Lanjut
+                  </Button>
+                </div>
               </div>
 
-              {/* tombol cta */}
-              <div className="flex flex-col items-center gap-4 sm:flex-row">
-                <Button href="/instruksi" variant="primary" size="md" className="group">
-                  Mulai Tes Sekarang
-                  <FaArrowRight
-                    className="transition-transform group-hover:translate-x-1"
-                    size={16}
-                  />
-                </Button>
-
-                <Button href="/tentang" variant="secondary" size="md">
-                  Pelajari Lebih Lanjut
-                </Button>
+              {/* kolom kanan: gambar hero */}
+              <div className="hidden md:flex items-center justify-center">
+                <img
+                  src="/images/hero-header.png"
+                  alt="Ilustrasi KompasKarir"
+                  className="w-full max-w-lg"
+                />
               </div>
             </div>
           </div>
