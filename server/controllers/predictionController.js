@@ -61,7 +61,14 @@ async function createPrediction(req, res, next) {
       prediksi_utama: prediction.prediksi_utama,
       top_personality: prediction.top_personality,
       rekomendasi: prediction.rekomendasi,
-      narasi: narasi ? narasi.narasi : "",
+      narasi: narasi
+        ? {
+            ringkasan: narasi.ringkasan || "",
+            kekuatan: narasi.kekuatan || [],
+            alasan_kecocokan: narasi.alasan_kecocokan || "",
+            saran_pengembangan: narasi.saran_pengembangan || "",
+          }
+        : null,
       skorRiasec,
     };
 
