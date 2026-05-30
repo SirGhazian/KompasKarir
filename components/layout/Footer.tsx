@@ -1,6 +1,7 @@
 export default function Footer() {
   const footerLinks = [
     { label: "Dokumentasi", href: "https://github.com/SirGhazian/kompas-karir", external: true },
+    { label: "About Us", href: "/about", external: false },
   ];
 
   return (
