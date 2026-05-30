@@ -2,7 +2,7 @@
 
 import NumberInput from "@/components/ui/NumberInput";
 import { FaArrowRight } from "react-icons/fa";
-import { FaLanguage, FaCalculator, FaFlask, FaUsers, FaPalette } from "react-icons/fa6";
+import { FaLanguage, FaCalculator, FaFlask, FaUsers, FaPalette, FaSpinner } from "react-icons/fa6";
 
 // --- tipe data nilai ---
 export interface NilaiAkademik {
@@ -77,6 +77,7 @@ interface NilaiFormProps {
   nilai: NilaiAkademik;
   onChange: (key: keyof NilaiAkademik, value: string) => void;
   onSubmit: () => void;
+  submitting?: boolean;
 }
 
 // --- hitung jumlah field yang sudah terisi ---
@@ -87,7 +88,12 @@ function hitungTerisi(nilai: NilaiAkademik): number {
 const TOTAL_MAPEL = 9;
 
 // --- komponen form nilai akademik ---
-export default function NilaiForm({ nilai, onChange, onSubmit }: NilaiFormProps) {
+export default function NilaiForm({
+  nilai,
+  onChange,
+  onSubmit,
+  submitting = false,
+}: NilaiFormProps) {
   const terisi = hitungTerisi(nilai);
   const semuaTerisi = terisi === TOTAL_MAPEL;
 
@@ -163,16 +169,25 @@ export default function NilaiForm({ nilai, onChange, onSubmit }: NilaiFormProps)
       <div className="flex flex-col items-center gap-3">
         <button
           onClick={onSubmit}
-          disabled={!semuaTerisi}
+          disabled={!semuaTerisi || submitting}
           className={`inline-flex w-full items-center justify-center gap-2.5 rounded-2xl px-8 py-4 text-base font-semibold transition-all duration-200 font-sans active:scale-95
             ${
-              semuaTerisi
+              semuaTerisi && !submitting
                 ? "cursor-pointer bg-secondary text-white hover:bg-secondary-dim"
                 : "cursor-not-allowed bg-[#c6c6cd] text-white"
             }`}
         >
-          Lihat Hasil Analisis
-          <FaArrowRight size={16} />
+          {submitting ? (
+            <>
+              <FaSpinner size={16} className="animate-spin" />
+              Memproses...
+            </>
+          ) : (
+            <>
+              Lihat Hasil Analisis
+              <FaArrowRight size={16} />
+            </>
+          )}
         </button>
       </div>
     </div>
