@@ -34,6 +34,8 @@ export default function QuizPage() {
   const [answers, setAnswers] = useState<Record<number, number>>({});
   // nilai akademik
   const [nilai, setNilai] = useState<NilaiAkademik>(nilaiAwal);
+  // status submit (cegah spam click + tampilkan spinner)
+  const [submitting, setSubmitting] = useState(false);
 
   // fetch soal dari backend saat mount
   useEffect(() => {
@@ -95,6 +97,9 @@ export default function QuizPage() {
 
   // --- submit akhir ---
   async function handleSubmit() {
+    // cegah spam click
+    if (submitting) return;
+    setSubmitting(true);
     try {
       // konversi nilai string ke number
       const nilaiNum = Object.fromEntries(
@@ -102,12 +107,14 @@ export default function QuizPage() {
       ) as Record<string, number>;
 
       const result = await submitPrediction(answers, nilaiNum);
-      // simpan id hasil untuk halaman hasil
+      // simpan id + hasil untuk halaman hasil
       localStorage.setItem("kk_prediction_id", result.id);
+      localStorage.setItem("kk_hasil", JSON.stringify(result.hasil));
       router.push("/hasil");
     } catch (err) {
       console.error("Gagal submit:", err);
       alert("Terjadi kesalahan saat mengirim data. Coba lagi.");
+      setSubmitting(false);
     }
   }
 
@@ -238,7 +245,9 @@ export default function QuizPage() {
                 {/* tombol selanjutnya / lanjut ke nilai */}
                 <button
                   onClick={handleNext}
-                  className="inline-flex cursor-pointer items-center gap-2 rounded-2xl bg-secondary px-6 py-3 text-sm font-semibold text-white transition-all duration-200 hover:bg-secondary-dim active:scale-95 font-sans"
+                  disabled={selectedAnswer === null || undefined}
+                  aria-disabled={selectedAnswer === null}
+                  className="inline-flex items-center gap-2 rounded-2xl bg-secondary px-6 py-3 text-sm font-semibold text-white transition-all duration-200 hover:bg-secondary-dim active:scale-95 font-sans disabled:cursor-not-allowed cursor-pointer"
                 >
                   {isLastQuiz ? "Lanjut ke Nilai" : "Selanjutnya"}
                   <FaArrowRight size={14} />
@@ -261,7 +270,12 @@ export default function QuizPage() {
                 Kembali ke Soal
               </button>
 
-              <NilaiForm nilai={nilai} onChange={handleNilaiChange} onSubmit={handleSubmit} />
+              <NilaiForm
+                nilai={nilai}
+                onChange={handleNilaiChange}
+                onSubmit={handleSubmit}
+                submitting={submitting}
+              />
             </>
           )}
         </div>
