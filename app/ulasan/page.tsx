@@ -60,7 +60,16 @@ export default function UlasanPage() {
         <section className="relative overflow-hidden bg-white py-16 md:py-24">
           <div className="mx-auto max-w-4xl px-6 md:px-12 text-center">
             <h1 className="mb-6 mx-auto max-w-4xl text-3xl font-extrabold leading-tight tracking-tight text-[#0b1c30] md:text-5xl lg:text-6xl font-headline">
-              Kisah <span className="text-secondary">Sukses</span> Bersama KompasKarir
+              Kisah{" "}
+              <span className="relative inline-block text-secondary">
+                Sukses
+                <img
+                  src="/images/underline.png"
+                  alt=""
+                  className="absolute left-0 -bottom-1 w-full h-1.5 pointer-events-none select-none"
+                />
+              </span>{" "}
+              Bersama KompasKarir
             </h1>
             <p className="mx-auto max-w-2xl text-lg leading-relaxed text-[#45464d] font-sans">
               Siswa yang sebelumnya ragu dalam menentukan jurusan kuliah kini telah menemukan
