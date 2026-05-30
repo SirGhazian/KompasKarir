@@ -12,23 +12,11 @@ export default function Footer() {
         <div className="flex flex-col items-center gap-8 md:flex-row md:justify-between md:gap-0">
           {/* brand */}
           <div className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-teal-gradient">
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <circle cx="12" cy="12" r="10" stroke="white" strokeWidth="2" />
-                <polygon points="12,4 15,12 12,20 9,12" fill="white" fillOpacity="0.3" />
-                <polygon points="12,4 15,12 9,12" fill="white" />
-                <circle cx="12" cy="12" r="1.5" fill="white" />
-              </svg>
-            </div>
-            <span className="text-lg font-extrabold tracking-tight text-white font-headline">
-              KompasKarir
-            </span>
+            <img
+              src="/vector/app-logo.svg"
+              alt="KompasKarir"
+              className="h-8 w-auto brightness-0 invert"
+            />
           </div>
 
           {/* credit */}
