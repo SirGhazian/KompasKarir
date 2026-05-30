@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import Badge from "@/components/ui/Badge";
@@ -8,27 +9,111 @@ import RadarChart from "@/components/ui/RadarChart";
 import { MixSquareCircleQuarter, CircleInCircle } from "@/components/ui/shape";
 import { FaShareAlt, FaArrowRight } from "react-icons/fa";
 import { FaBookOpen } from "react-icons/fa6";
+import { getTipeInfo } from "@/utils/riasecInfo";
+import { getPrediction } from "@/utils/api";
+import { TextSkeleton } from "@/components/ui/Skeleton";
+import Skeleton from "@/components/ui/Skeleton";
 
-// --- data dummy hasil tes ---
-const hasilDummy = {
-  tipeDominan: "Investigative",
-  huruf: "I",
-  deskripsi:
-    "Kamu cenderung analitis, penasaran, dan logis. Kamu menikmati proses berpikir kritis, meneliti, dan memecahkan masalah yang kompleks. Lingkungan belajar yang ideal bagimu adalah yang memberikan kebebasan untuk mengeksplorasi ide secara mendalam.",
-  skor: {
-    R: 45,
-    I: 88,
-    A: 62,
-    S: 35,
-    E: 50,
-    C: 40,
-  },
-};
+// --- tipe hasil dari backend ---
+interface HasilPrediksi {
+  kode_riasec: string;
+  prediksi_utama: string;
+  narasi: string;
+  skorRiasec: { r: number; i: number; a: number; s: number; e: number; c: number };
+}
 
 // --- halaman hasil tes ---
 export default function HasilPage() {
-  const { tipeDominan, deskripsi, skor } = hasilDummy;
-  const dataChart = [skor.R, skor.I, skor.A, skor.S, skor.E, skor.C];
+  const [hasil, setHasil] = useState<HasilPrediksi | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // baca hasil dari localStorage dulu
+    const cached = localStorage.getItem("kk_hasil");
+    if (cached) {
+      try {
+        setHasil(JSON.parse(cached));
+        setLoading(false);
+        return;
+      } catch {
+        // lanjut fetch jika parse gagal
+      }
+    }
+
+    // fallback: fetch via prediction id
+    const id = localStorage.getItem("kk_prediction_id");
+    if (id) {
+      getPrediction(id)
+        .then((data) => {
+          setHasil(data.hasil);
+          setLoading(false);
+        })
+        .catch(() => setLoading(false));
+    } else {
+      setLoading(false);
+    }
+  }, []);
+
+  // --- loading state (skeleton) ---
+  if (loading) {
+    return (
+      <>
+        <Navbar />
+        <main className="min-h-screen bg-[#f8f9ff] py-8 md:py-20">
+          <div className="mx-auto max-w-4xl px-6 md:px-12">
+            <div className="rounded-3xl bg-white p-8 shadow-card md:p-12">
+              <div className="grid grid-cols-1 gap-10 md:grid-cols-2 md:items-center">
+                {/* kolom kiri: skeleton deskripsi */}
+                <div className="flex flex-col">
+                  <Skeleton className="mb-4 h-7 w-40 rounded-full" />
+                  <Skeleton className="h-10 w-56" />
+                  <div className="my-5 h-1 w-16 rounded-full bg-[#e5eeff]" />
+                  {/* skeleton untuk narasi (antisipasi gemini lama/gagal) */}
+                  <TextSkeleton lines={4} />
+                </div>
+                {/* kolom kanan: skeleton radar */}
+                <div className="flex items-center justify-center">
+                  <Skeleton className="h-64 w-64 rounded-full" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+        <Footer />
+      </>
+    );
+  }
+
+  // --- empty state (belum tes) ---
+  if (!hasil) {
+    return (
+      <>
+        <Navbar />
+        <main className="min-h-screen bg-[#f8f9ff] py-20">
+          <div className="mx-auto max-w-2xl px-6 text-center">
+            <h2 className="text-2xl font-extrabold text-[#0b1c30] font-headline md:text-3xl">
+              Belum Ada Hasil Tes
+            </h2>
+            <p className="mt-3 text-base text-[#45464d] font-sans">
+              Selesaikan tes RIASEC terlebih dahulu untuk melihat hasil analisismu.
+            </p>
+            <div className="mt-8 flex justify-center">
+              <Button href="/quiz" variant="primary" size="md">
+                Mulai Tes Sekarang
+                <FaArrowRight size={16} />
+              </Button>
+            </div>
+          </div>
+        </main>
+        <Footer />
+      </>
+    );
+  }
+
+  // --- data hasil ---
+  const tipe = getTipeInfo(hasil.kode_riasec[0]);
+  const skor = hasil.skorRiasec;
+  const dataChart = [skor.r, skor.i, skor.a, skor.s, skor.e, skor.c];
 
   return (
     <>
@@ -52,17 +137,19 @@ export default function HasilPage() {
               {/* kolom kiri tipe dominan */}
               <div className="flex flex-col">
                 <Badge variant="category" colorClass="bg-[#e3f2fd] text-[#0d47a1]" className="mb-4">
-                  Tipe Dominanmu
+                  Tipe Dominanmu — {hasil.kode_riasec}
                 </Badge>
 
                 <h2 className="text-4xl font-extrabold tracking-tight text-[#0b1c30] md:text-5xl font-headline uppercase">
-                  {tipeDominan}
+                  {tipe.nama}
                 </h2>
 
                 {/* divider */}
                 <div className="my-5 h-1 w-16 rounded-full bg-secondary" />
 
-                <p className="text-base leading-relaxed text-[#45464d] font-sans">{deskripsi}</p>
+                <p className="text-base leading-relaxed text-[#45464d] font-sans">
+                  {hasil.narasi || tipe.deskripsi}
+                </p>
               </div>
 
               {/* kolom kanan radar chart */}
