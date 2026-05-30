@@ -28,12 +28,7 @@ export default function Navbar() {
       <div className="mx-auto flex h-[72px] max-w-7xl items-center justify-between px-6 md:px-12">
         {/* logo */}
         <Link href="/" className="flex items-center gap-2 group">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-secondary">
-            <VscCompassActive className="text-white" size={20} />
-          </div>
-          <span className="text-xl font-extrabold tracking-tight text-[#0b1c30] transition-colors group-hover:text-[#006a61] font-headline">
-            KompasKarir
-          </span>
+          <img src="/images/app-logo.png" alt="KompasKarir" className="h-9 w-auto" />
         </Link>
 
         {/* navigasi desktop */}
