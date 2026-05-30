@@ -15,10 +15,17 @@ import { TextSkeleton } from "@/components/ui/Skeleton";
 import Skeleton from "@/components/ui/Skeleton";
 
 // --- tipe hasil dari backend ---
+interface NarasiData {
+  ringkasan: string;
+  kekuatan: string[];
+  alasan_kecocokan: string;
+  saran_pengembangan: string;
+}
+
 interface HasilPrediksi {
   kode_riasec: string;
   prediksi_utama: string;
-  narasi: string;
+  narasi: NarasiData | null;
   skorRiasec: { r: number; i: number; a: number; s: number; e: number; c: number };
 }
 
@@ -84,8 +91,8 @@ export default function HasilPage() {
     );
   }
 
-  // --- empty state (belum tes) ---
-  if (!hasil) {
+  // --- empty state (belum tes atau data tidak valid) ---
+  if (!hasil || !hasil.kode_riasec || !hasil.skorRiasec) {
     return (
       <>
         <Navbar />
@@ -148,7 +155,7 @@ export default function HasilPage() {
                 <div className="my-5 h-1 w-16 rounded-full bg-secondary" />
 
                 <p className="text-base leading-relaxed text-[#45464d] font-sans">
-                  {hasil.narasi || tipe.deskripsi}
+                  {hasil.narasi?.ringkasan || tipe.deskripsi}
                 </p>
               </div>
 
@@ -160,7 +167,7 @@ export default function HasilPage() {
           </div>
 
           {/* --- tombol --- */}
-          <div className="mt-10 flex flex-col items-center justify-between gap-4 sm:flex-row">
+          <div className="mt-8 flex flex-col items-center justify-between gap-4 sm:flex-row">
             {/* kiri */}
             <div className="flex flex-col gap-3 sm:flex-row">
               <Button href="/tentang" variant="secondary" size="md">
@@ -180,6 +187,56 @@ export default function HasilPage() {
               </Button>
             </div>
           </div>
+
+          {/* --- detail narasi AI --- */}
+          {hasil.narasi && (
+            <div className="mt-8 flex flex-col gap-6">
+              {/* kekuatan */}
+              {hasil.narasi.kekuatan.length > 0 && (
+                <div className="rounded-3xl bg-white p-8">
+                  <h3 className="mb-4 text-lg font-bold text-[#0b1c30] font-headline">
+                    Kekuatanmu
+                  </h3>
+                  <ul className="flex flex-col gap-2">
+                    {hasil.narasi.kekuatan.map((item, i) => (
+                      <li key={i} className="flex items-start gap-3">
+                        <span className="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#e5f7f5] text-xs font-bold text-[#006a61]">
+                          ✓
+                        </span>
+                        <span className="text-sm leading-relaxed text-[#45464d] font-sans">
+                          {item}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {/* alasan kecocokan */}
+              {hasil.narasi.alasan_kecocokan && (
+                <div className="rounded-3xl bg-white p-8">
+                  <h3 className="mb-3 text-lg font-bold text-[#0b1c30] font-headline">
+                    Mengapa Cocok Untukmu
+                  </h3>
+                  <p className="text-sm leading-relaxed text-[#45464d] font-sans">
+                    {hasil.narasi.alasan_kecocokan}
+                  </p>
+                </div>
+              )}
+
+              {/* saran pengembangan */}
+              {hasil.narasi.saran_pengembangan && (
+                <div className="rounded-3xl bg-[#e5f7f5] p-8">
+                  <h3 className="mb-3 text-lg font-bold text-[#006a61] font-headline">
+                    Saran Pengembangan
+                  </h3>
+                  <p className="text-sm leading-relaxed text-[#45464d] font-sans">
+                    {hasil.narasi.saran_pengembangan}
+                  </p>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </main>
 

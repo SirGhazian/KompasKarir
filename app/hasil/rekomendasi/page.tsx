@@ -79,6 +79,16 @@ export default function RekomendasiPage() {
   const [biaya, setBiaya] = useState("");
   const [showReview, setShowReview] = useState(false);
   const [hasReviewed, setHasReviewed] = useState(false);
+  const [hasResult, setHasResult] = useState(true);
+
+  // cek apakah user sudah mengerjakan tes
+  useEffect(() => {
+    const cached = localStorage.getItem("kk_hasil");
+    const id = localStorage.getItem("kk_prediction_id");
+    if (!cached && !id) {
+      setHasResult(false);
+    }
+  }, []);
 
   // cek apakah user sudah pernah memberi ulasan
   useEffect(() => {
@@ -88,6 +98,31 @@ export default function RekomendasiPage() {
   // data per halaman
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const currentData = jurusanData.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+
+  // proteksi: belum tes
+  if (!hasResult) {
+    return (
+      <>
+        <Navbar />
+        <main className="min-h-screen bg-[#f8f9ff] py-20">
+          <div className="mx-auto max-w-2xl px-6 text-center">
+            <h2 className="text-2xl font-extrabold text-[#0b1c30] font-headline md:text-3xl">
+              Belum Ada Hasil Tes
+            </h2>
+            <p className="mt-3 text-base text-[#45464d] font-sans">
+              Selesaikan tes RIASEC terlebih dahulu untuk melihat rekomendasi jurusan.
+            </p>
+            <div className="mt-8 flex justify-center">
+              <Button href="/quiz" variant="primary" size="md">
+                Mulai Tes Sekarang
+              </Button>
+            </div>
+          </div>
+        </main>
+        <Footer />
+      </>
+    );
+  }
 
   return (
     <>

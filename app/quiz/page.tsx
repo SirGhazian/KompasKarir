@@ -195,9 +195,16 @@ export default function QuizPage() {
 
               {/* --- pilihan skala --- */}
               <div className="mb-10">
-                <div className="mb-3 flex justify-between px-1">
-                  <span className="text-xs text-[#76777d] font-sans">Sangat Tidak Setuju</span>
-                  <span className="text-xs text-[#76777d] font-sans">Sangat Setuju</span>
+                <div className="mb-3 hidden md:grid grid-cols-5 px-1">
+                  <span className="text-xs text-[#76777d] font-sans text-left col-span-1">
+                    Sangat Tidak Suka
+                  </span>
+                  <span className="text-xs text-[#76777d] font-sans text-center col-span-3">
+                    Ragu-Ragu
+                  </span>
+                  <span className="text-xs text-[#76777d] font-sans text-right col-span-1">
+                    Sangat Suka
+                  </span>
                 </div>
                 <div className="grid grid-cols-5 gap-3">
                   {skalaOptions.map((val) => {
@@ -217,6 +224,18 @@ export default function QuizPage() {
                       </button>
                     );
                   })}
+                </div>
+                {/* keterangan mobile (di bawah tombol) */}
+                <div className="mt-3 grid grid-cols-5 px-1 md:hidden">
+                  <span className="text-xs text-[#76777d] font-sans text-left col-span-1">
+                    Sangat Tidak Suka
+                  </span>
+                  <span className="text-xs text-[#76777d] font-sans text-center col-span-3">
+                    Ragu-Ragu
+                  </span>
+                  <span className="text-xs text-[#76777d] font-sans text-right col-span-1">
+                    Sangat Suka
+                  </span>
                 </div>
               </div>
 
@@ -238,7 +257,7 @@ export default function QuizPage() {
                   Sebelumnya
                 </button>
 
-                <span className="text-sm font-semibold text-[#45464d] font-sans">
+                <span className="hidden md:inline text-sm font-semibold text-[#45464d] font-sans">
                   {currentIndex + 1} / {totalQuestions}
                 </span>
 

@@ -9,18 +9,18 @@ import { BsCheckCircleFill } from "react-icons/bs";
 const panduan = [
   { nomor: "01", teks: "Jawab setiap pertanyaan dengan jujur sesuai kondisi dirimu saat ini." },
   { nomor: "02", teks: "Tidak ada jawaban benar atau salah, semua pilihan adalah valid." },
-  { nomor: "03", teks: "Gunakan skala 1–5 dari Sangat Tidak Setuju hingga Sangat Setuju." },
+  { nomor: "03", teks: "Gunakan skala 1–5 dari Sangat Tidak Suka hingga Sangat Suka." },
   { nomor: "04", teks: "Tes ini terdiri dari 72 pertanyaan yang mencakup 6 dimensi kepribadian." },
   { nomor: "05", teks: "Pastikan kamu dalam kondisi tenang dan tidak terburu-buru." },
 ];
 
 // --- skala referensi ---
 const skalaReferensi = [
-  { nilai: 1, label: "Sangat Tidak Setuju" },
-  { nilai: 2, label: "Tidak Setuju" },
-  { nilai: 3, label: "Netral" },
-  { nilai: 4, label: "Setuju" },
-  { nilai: 5, label: "Sangat Setuju" },
+  { nilai: 1, label: "Sangat Tidak Suka" },
+  { nilai: 2, label: "Tidak Suka" },
+  { nilai: 3, label: "Ragu-Ragu" },
+  { nilai: 4, label: "Suka" },
+  { nilai: 5, label: "Sangat Suka" },
 ];
 
 // --- halaman instruksi ---
@@ -89,8 +89,8 @@ export default function InstruksiPage() {
             </div>
             {/* label mobile */}
             <div className="mt-3 flex justify-between md:hidden">
-              <span className="text-xs text-[#45464d] font-sans">Sangat Tidak Setuju</span>
-              <span className="text-xs text-[#45464d] font-sans">Sangat Setuju</span>
+              <span className="text-xs text-[#45464d] font-sans">Sangat Tidak Suka</span>
+              <span className="text-xs text-[#45464d] font-sans">Sangat Suka</span>
             </div>
           </div>
 
