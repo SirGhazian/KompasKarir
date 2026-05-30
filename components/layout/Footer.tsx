@@ -1,5 +1,7 @@
 export default function Footer() {
-  const footerLinks = [{ label: "Dokumentasi", href: "#" }];
+  const footerLinks = [
+    { label: "Dokumentasi", href: "https://github.com/SirGhazian/kompas-karir", external: true },
+  ];
 
   return (
     <footer className="w-full bg-[#0b1c30] text-[#eaf1ff]">
@@ -40,6 +42,7 @@ export default function Footer() {
               <a
                 key={link.label}
                 href={link.href}
+                {...(link.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
                 className="text-xs text-[#bec6e0] opacity-70 transition-opacity hover:opacity-100 hover:text-[#86f2e4] font-sans"
               >
                 {link.label}

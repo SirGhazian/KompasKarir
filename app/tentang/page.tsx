@@ -116,15 +116,6 @@ export default function TentangPage() {
             <div className="grid grid-cols-1 gap-12 md:grid-cols-2 md:items-stretch">
               {/* teks utama */}
               <div className="py-20 md:py-32">
-                <Badge
-                  variant="category"
-                  size="md"
-                  colorClass="bg-[#e5f7f5] text-[#006a61]"
-                  className="mb-4"
-                >
-                  <HiAcademicCap size={16} />
-                  Teori Holland
-                </Badge>
                 <h1 className="mt-4 text-4xl font-extrabold tracking-tight text-[#0b1c30] md:text-5xl font-headline">
                   Tentang Metode <span className="text-secondary">RIASEC</span>
                 </h1>
@@ -143,100 +134,64 @@ export default function TentangPage() {
               </div>
 
               {/* bento grid */}
-              <div className="flex bg-[#e5f7f5] py-12 md:bg-transparent md:py-0 md:pl-16">
+              <div className="hidden md:flex md:bg-transparent md:py-0 md:pl-16">
                 <div className="grid grid-cols-3 grid-rows-3 gap-4 w-full h-full min-h-[450px] py-16 md:py-24">
                   {/* realistic */}
-                  <div
-                    className={`flex flex-col items-center justify-center rounded-3xl p-4 ${dimensi[0].warnaBg} shadow-sm transition-all hover:scale-105 hover:shadow-md`}
-                  >
-                    <span
-                      className={`text-4xl font-extrabold font-headline ${dimensi[0].warnaTeks}`}
-                    >
+                  <div className="flex flex-col items-center justify-center rounded-3xl border-2 border-[#006a61] bg-white p-4 shadow-[var(--shadow-hard)] transition-all duration-300 hover:-translate-x-1 hover:-translate-y-1 hover:shadow-[var(--shadow-hard-hover)]">
+                    <span className="text-4xl font-extrabold font-headline text-[#006a61]">
                       {dimensi[0].huruf}
                     </span>
-                    <span
-                      className={`mt-2 text-xs font-bold uppercase tracking-wider font-sans ${dimensi[0].warnaTeks}`}
-                    >
+                    <span className="mt-2 text-xs font-bold uppercase tracking-wider font-sans text-[#006a61]">
                       {dimensi[0].label}
                     </span>
                   </div>
 
                   {/* investigative */}
-                  <div
-                    className={`col-span-2 flex flex-col items-center justify-center rounded-3xl p-4 ${dimensi[1].warnaBg} shadow-sm transition-all hover:scale-105 hover:shadow-md`}
-                  >
-                    <span
-                      className={`text-5xl font-extrabold font-headline ${dimensi[1].warnaTeks}`}
-                    >
+                  <div className="col-span-2 flex flex-col items-center justify-center rounded-3xl border-2 border-[#006a61] bg-white p-4 shadow-[var(--shadow-hard)] transition-all duration-300 hover:-translate-x-1 hover:-translate-y-1 hover:shadow-[var(--shadow-hard-hover)]">
+                    <span className="text-5xl font-extrabold font-headline text-[#006a61]">
                       {dimensi[1].huruf}
                     </span>
-                    <span
-                      className={`mt-2 text-sm font-bold uppercase tracking-wider font-sans ${dimensi[1].warnaTeks}`}
-                    >
+                    <span className="mt-2 text-sm font-bold uppercase tracking-wider font-sans text-[#006a61]">
                       {dimensi[1].label}
                     </span>
                   </div>
 
                   {/* artistic */}
-                  <div
-                    className={`row-span-2 flex flex-col items-center justify-center rounded-3xl p-4 ${dimensi[2].warnaBg} shadow-sm transition-all hover:scale-105 hover:shadow-md`}
-                  >
-                    <span
-                      className={`text-5xl font-extrabold font-headline ${dimensi[2].warnaTeks}`}
-                    >
+                  <div className="row-span-2 flex flex-col items-center justify-center rounded-3xl border-2 border-[#006a61] bg-white p-4 shadow-[var(--shadow-hard)] transition-all duration-300 hover:-translate-x-1 hover:-translate-y-1 hover:shadow-[var(--shadow-hard-hover)]">
+                    <span className="text-5xl font-extrabold font-headline text-[#006a61]">
                       {dimensi[2].huruf}
                     </span>
-                    <span
-                      className={`mt-2 text-sm font-bold uppercase tracking-wider font-sans ${dimensi[2].warnaTeks}`}
-                    >
+                    <span className="mt-2 text-sm font-bold uppercase tracking-wider font-sans text-[#006a61]">
                       {dimensi[2].label}
                     </span>
                   </div>
 
                   {/* social */}
-                  <div
-                    className={`flex flex-col items-center justify-center rounded-3xl p-4 ${dimensi[3].warnaBg} shadow-sm transition-all hover:scale-105 hover:shadow-md`}
-                  >
-                    <span
-                      className={`text-4xl font-extrabold font-headline ${dimensi[3].warnaTeks}`}
-                    >
+                  <div className="flex flex-col items-center justify-center rounded-3xl border-2 border-[#006a61] bg-white p-4 shadow-[var(--shadow-hard)] transition-all duration-300 hover:-translate-x-1 hover:-translate-y-1 hover:shadow-[var(--shadow-hard-hover)]">
+                    <span className="text-4xl font-extrabold font-headline text-[#006a61]">
                       {dimensi[3].huruf}
                     </span>
-                    <span
-                      className={`mt-2 text-xs font-bold uppercase tracking-wider font-sans ${dimensi[3].warnaTeks}`}
-                    >
+                    <span className="mt-2 text-xs font-bold uppercase tracking-wider font-sans text-[#006a61]">
                       {dimensi[3].label}
                     </span>
                   </div>
 
                   {/* enterprising */}
-                  <div
-                    className={`flex flex-col items-center justify-center rounded-3xl p-4 ${dimensi[4].warnaBg} shadow-sm transition-all hover:scale-105 hover:shadow-md`}
-                  >
-                    <span
-                      className={`text-4xl font-extrabold font-headline ${dimensi[4].warnaTeks}`}
-                    >
+                  <div className="flex flex-col items-center justify-center rounded-3xl border-2 border-[#006a61] bg-white p-4 shadow-[var(--shadow-hard)] transition-all duration-300 hover:-translate-x-1 hover:-translate-y-1 hover:shadow-[var(--shadow-hard-hover)]">
+                    <span className="text-4xl font-extrabold font-headline text-[#006a61]">
                       {dimensi[4].huruf}
                     </span>
-                    <span
-                      className={`mt-2 text-xs font-bold uppercase tracking-wider font-sans ${dimensi[4].warnaTeks}`}
-                    >
+                    <span className="mt-2 text-xs font-bold uppercase tracking-wider font-sans text-[#006a61]">
                       {dimensi[4].label}
                     </span>
                   </div>
 
                   {/* conventional */}
-                  <div
-                    className={`col-span-2 flex flex-col items-center justify-center rounded-3xl p-4 ${dimensi[5].warnaBg} shadow-sm transition-all hover:scale-105 hover:shadow-md`}
-                  >
-                    <span
-                      className={`text-5xl font-extrabold font-headline ${dimensi[5].warnaTeks}`}
-                    >
+                  <div className="col-span-2 flex flex-col items-center justify-center rounded-3xl border-2 border-[#006a61] bg-white p-4 shadow-[var(--shadow-hard)] transition-all duration-300 hover:-translate-x-1 hover:-translate-y-1 hover:shadow-[var(--shadow-hard-hover)]">
+                    <span className="text-5xl font-extrabold font-headline text-[#006a61]">
                       {dimensi[5].huruf}
                     </span>
-                    <span
-                      className={`mt-2 text-sm font-bold uppercase tracking-wider font-sans ${dimensi[5].warnaTeks}`}
-                    >
+                    <span className="mt-2 text-sm font-bold uppercase tracking-wider font-sans text-[#006a61]">
                       {dimensi[5].label}
                     </span>
                   </div>
