@@ -40,8 +40,9 @@ async function authFetch(url: string, options: RequestInit = {}): Promise<Respon
     },
   });
 
-  // kalau token expired, minta baru dan retry sekali
-  if (res.status === 403) {
+  // kalau token invalid/expired (401), minta token baru dan retry sekali
+  // catatan: 403 = akses ditolak, tidak di-retry
+  if (res.status === 401) {
     const newToken = await requestToken();
     return fetch(`${BASE_URL}${url}`, {
       ...options,
@@ -57,6 +58,14 @@ async function authFetch(url: string, options: RequestInit = {}): Promise<Respon
 }
 
 // --- api functions ---
+
+// ambil soal quiz dari backend (diacak)
+export async function getQuestions(): Promise<{ id: number; text: string }[]> {
+  const res = await fetch(`${BASE_URL}/api/questions`);
+  if (!res.ok) throw new Error("Gagal mengambil soal");
+  const data = await res.json();
+  return data.questions;
+}
 
 // kirim jawaban quiz + nilai ---> hasil prediksi
 export async function submitPrediction(
