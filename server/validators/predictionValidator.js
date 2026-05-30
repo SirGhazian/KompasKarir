@@ -3,11 +3,11 @@ const Joi = require("joi");
 // schema validasi untuk POST /api/predictions
 const predictionSchema = Joi.object({
   answers: Joi.object()
-    .pattern(Joi.string(), Joi.number().integer().min(1).max(5))
-    .min(1)
+    .pattern(Joi.string().regex(/^\d+$/), Joi.number().integer().min(1).max(5))
+    .length(72)
     .required()
     .messages({
-      "object.min": "Jawaban quiz tidak boleh kosong",
+      "object.length": "Jawaban harus tepat 72 soal",
       "any.required": "Field answers wajib diisi",
     }),
 

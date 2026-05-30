@@ -14,7 +14,8 @@ function authToken(req, res, next) {
     req.session = decoded; // { sessionId, userAgent, iat, exp }
     next();
   } catch (err) {
-    return res.status(403).json({ error: "Token tidak valid atau sudah expired" });
+    // 401 = token invalid/expired (bukan 403 yang dipakai untuk akses ditolak)
+    return res.status(401).json({ error: "Token tidak valid atau sudah expired" });
   }
 }
 

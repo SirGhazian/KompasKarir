@@ -1,21 +1,15 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import NilaiForm, { type NilaiAkademik } from "@/components/ui/NilaiForm";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
-import { quizQuestions, totalQuestions } from "@/utils/quizData";
-import { submitPrediction } from "@/utils/api";
+import { getQuestions, submitPrediction } from "@/utils/api";
 
 // --- konstanta ---
 const skalaOptions = [1, 2, 3, 4, 5];
-
-// step 0 s/d (quizQuestions.length - 1) = soal quiz
-// step quizQuestions.length = form nilai akademik
-const STEP_NILAI = quizQuestions.length;
-const TOTAL_STEPS = quizQuestions.length + 1; // soal + 1 step nilai
 
 // --- nilai awal form akademik ---
 const nilaiAwal: NilaiAkademik = {
@@ -33,24 +27,44 @@ const nilaiAwal: NilaiAkademik = {
 // --- halaman quiz ---
 export default function QuizPage() {
   const router = useRouter();
+  const [questions, setQuestions] = useState<{ id: number; text: string }[]>([]);
+  const [loading, setLoading] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
-  // simpan jawaban per soal: key = index soal, value = angka 1-5
+  // simpan jawaban: key = id soal, value = angka 1-5
   const [answers, setAnswers] = useState<Record<number, number>>({});
   // nilai akademik
   const [nilai, setNilai] = useState<NilaiAkademik>(nilaiAwal);
 
+  // fetch soal dari backend saat mount
+  useEffect(() => {
+    getQuestions()
+      .then((data) => {
+        setQuestions(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Gagal mengambil soal:", err);
+        setLoading(false);
+      });
+  }, []);
+
+  const totalQuestions = questions.length;
+  const STEP_NILAI = totalQuestions;
+  const TOTAL_STEPS = totalQuestions + 1;
+
   // apakah sedang di step form nilai
   const isNilaiStep = currentIndex === STEP_NILAI;
 
-  // soal yang sedang ditampilkan (hanya relevan saat bukan step nilai)
-  const currentQuestion = !isNilaiStep ? quizQuestions[currentIndex] : null;
-  const selectedAnswer = answers[currentIndex] ?? null;
+  // soal yang sedang ditampilkan
+  const currentQuestion = !isNilaiStep ? questions[currentIndex] : null;
+  const selectedAnswer = currentQuestion ? (answers[currentQuestion.id] ?? null) : null;
 
   // progress bar mencakup seluruh alur (quiz + nilai)
-  const progressPercent = Math.round(((currentIndex + 1) / TOTAL_STEPS) * 100);
+  const progressPercent =
+    totalQuestions > 0 ? Math.round(((currentIndex + 1) / TOTAL_STEPS) * 100) : 0;
 
   const isFirst = currentIndex === 0;
-  const isLastQuiz = currentIndex === quizQuestions.length - 1;
+  const isLastQuiz = currentIndex === totalQuestions - 1;
 
   // --- navigasi soal ---
   function handlePrev() {
@@ -63,13 +77,15 @@ export default function QuizPage() {
     if (!isLastQuiz) {
       setCurrentIndex((i) => i + 1);
     } else {
-      // soal terakhir ---> lanjut ke form nilai
+      // soal terakhir → lanjut ke form nilai
       setCurrentIndex(STEP_NILAI);
     }
   }
 
   function handleSelectAnswer(val: number) {
-    setAnswers((prev) => ({ ...prev, [currentIndex]: val }));
+    if (!currentQuestion) return;
+    // simpan dengan key = id soal (bukan index urutan)
+    setAnswers((prev) => ({ ...prev, [currentQuestion.id]: val }));
   }
 
   // --- update nilai akademik ---
@@ -93,6 +109,38 @@ export default function QuizPage() {
       console.error("Gagal submit:", err);
       alert("Terjadi kesalahan saat mengirim data. Coba lagi.");
     }
+  }
+
+  // --- loading state ---
+  if (loading) {
+    return (
+      <>
+        <Navbar />
+        <main className="min-h-screen bg-[#f8f9ff] py-12 md:py-20">
+          <div className="mx-auto max-w-2xl px-6 md:px-12 text-center">
+            <p className="text-lg font-semibold text-[#45464d] font-sans">Memuat soal...</p>
+          </div>
+        </main>
+        <Footer />
+      </>
+    );
+  }
+
+  // --- error state ---
+  if (!loading && totalQuestions === 0) {
+    return (
+      <>
+        <Navbar />
+        <main className="min-h-screen bg-[#f8f9ff] py-12 md:py-20">
+          <div className="mx-auto max-w-2xl px-6 md:px-12 text-center">
+            <p className="text-lg font-semibold text-[#ba1a1a] font-sans">
+              Gagal memuat soal. Pastikan server backend berjalan.
+            </p>
+          </div>
+        </main>
+        <Footer />
+      </>
+    );
   }
 
   return (
@@ -184,7 +232,7 @@ export default function QuizPage() {
                 </button>
 
                 <span className="text-sm font-semibold text-[#45464d] font-sans">
-                  {currentIndex + 1} / {quizQuestions.length}
+                  {currentIndex + 1} / {totalQuestions}
                 </span>
 
                 {/* tombol selanjutnya / lanjut ke nilai */}
@@ -206,7 +254,7 @@ export default function QuizPage() {
             <>
               {/* tombol kembali ke soal terakhir */}
               <button
-                onClick={() => setCurrentIndex(quizQuestions.length - 1)}
+                onClick={() => setCurrentIndex(totalQuestions - 1)}
                 className="mb-6 inline-flex cursor-pointer items-center gap-2 rounded-2xl border-2 border-[#c6c6cd] bg-white px-5 py-2.5 text-sm font-semibold text-[#0b1c30] transition-all duration-200 hover:border-[#006a61] hover:text-[#006a61] font-sans"
               >
                 <FaArrowLeft size={13} />

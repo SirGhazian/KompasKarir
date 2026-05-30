@@ -1,59 +1,32 @@
 const { db } = require("../config/firebase");
-const { collection, addDoc, doc, getDoc, serverTimestamp } = require("firebase/firestore");
+const { collection, addDoc, doc, getDoc } = require("firebase/firestore");
 const { predictionSchema } = require("../validators/predictionValidator");
+const { getCategoryById } = require("../data/quizData");
+const { agregasiNilai } = require("../utils/nilaiHelper");
+const { analyzeRiasec } = require("../services/aiService");
 
-// mapping index soal ke kategori RIASEC
-// soal dikelompokkan per kategori (sesuai quizData.ts)
-const categoryMap = {
-  Realistic: [],
-  Investigative: [],
-  Artistic: [],
-  Social: [],
-  Enterprising: [],
-  Conventional: [],
-};
-
-// hitung skor RIASEC dari jawaban quiz
+// hitung skor RIASEC dari jawaban quiz (scaled 0–100, key lowercase)
 function hitungSkorRiasec(answers) {
-  // sementara cuyyy / dummy
-  const categories = [
-    "Realistic",
-    "Investigative",
-    "Artistic",
-    "Social",
-    "Enterprising",
-    "Conventional",
-  ];
-  const skor = { R: 0, I: 0, A: 0, S: 0, E: 0, C: 0 };
-  const hurufMap = {
-    Realistic: "R",
-    Investigative: "I",
-    Artistic: "A",
-    Social: "S",
-    Enterprising: "E",
-    Conventional: "C",
-  };
+  const raw = { r: 0, i: 0, a: 0, s: 0, e: 0, c: 0 };
 
-  const keys = Object.keys(answers).sort((a, b) => Number(a) - Number(b));
-  keys.forEach((key, idx) => {
-    const catIdx = idx % 6;
-    const cat = categories[catIdx];
-    skor[hurufMap[cat]] += Number(answers[key]);
-  });
+  // sum jawaban per kategori berdasarkan ID soal
+  for (const [id, value] of Object.entries(answers)) {
+    const category = getCategoryById(Number(id));
+    if (category) {
+      raw[category.toLowerCase()] += value;
+    }
+  }
 
-  return skor;
+  // scaling atau mapping atau apalah namanya wkwkwk ((raw - 12) / 48) * 100
+  const scaled = {};
+  for (const [cat, score] of Object.entries(raw)) {
+    scaled[cat] = Math.round(((score - 12) / 48) * 100 * 100) / 100;
+  }
+
+  return scaled;
 }
 
-// tentukan kode 3 huruf dominan
-function tentukanKode(skor) {
-  const sorted = Object.entries(skor).sort((a, b) => b[1] - a[1]);
-  return sorted
-    .slice(0, 3)
-    .map(([huruf]) => huruf)
-    .join("");
-}
-
-// POST /api/predictions ---> proses quiz + nilai ---> hasil RIASEC
+// POST /api/predictions ---> proses quiz + nilai ---> hasil RIASEC dari AI
 async function createPrediction(req, res, next) {
   try {
     // validasi body
@@ -65,15 +38,32 @@ async function createPrediction(req, res, next) {
     const { answers, nilai } = value;
     const { sessionId } = req.session;
 
-    // hitung skor RIASEC
-    const skor = hitungSkorRiasec(answers);
-    const kode = tentukanKode(skor);
+    // hitung skor RIASEC (lowercase, 0–100)
+    const skorRiasec = hitungSkorRiasec(answers);
 
-    // panggil model ML untuk rekomendasi jurusan yang lebih akurat
-    // tapi ini cuman sementara cuy ---> rekomendasi placeholder
-    const rekomendasi = getRekomendasi(kode);
+    // agregasi 9 mapel → 5 kategori akademik
+    const akademik = agregasiNilai(nilai);
 
-    const hasil = { kode, skor, rekomendasi };
+    // panggil model AI di huggingface
+    let aiResult;
+    try {
+      aiResult = await analyzeRiasec(skorRiasec, akademik, 3);
+    } catch (aiErr) {
+      console.error("AI error:", aiErr.message);
+      return res.status(502).json({ error: `Gagal memproses analisis AI: ${aiErr.message}` });
+    }
+
+    const { prediction, narasi } = aiResult;
+
+    // susun hasil lengkap
+    const hasil = {
+      kode_riasec: prediction.kode_riasec,
+      prediksi_utama: prediction.prediksi_utama,
+      top_personality: prediction.top_personality,
+      rekomendasi: prediction.rekomendasi,
+      narasi: narasi ? narasi.narasi : "",
+      skorRiasec,
+    };
 
     // simpan ke firestore database
     const docRef = await addDoc(collection(db, "predictions"), {
@@ -118,22 +108,6 @@ async function getPrediction(req, res, next) {
   } catch (err) {
     next(err);
   }
-}
-
-// rekomendasi jurusan sederhana berdasarkan kode dominan
-function getRekomendasi(kode) {
-  const rekomendasiMap = {
-    R: ["Teknik Sipil", "Teknik Mesin", "Arsitektur", "Geografi"],
-    I: ["Informatika", "Fisika", "Statistika", "Bioteknologi"],
-    A: ["Desain Komunikasi Visual", "Sastra", "Seni Rupa", "Film & TV"],
-    S: ["Psikologi", "Keguruan", "Ilmu Keperawatan", "Sosiologi"],
-    E: ["Manajemen Bisnis", "Ilmu Komunikasi", "Ilmu Politik", "Hukum"],
-    C: ["Akuntansi", "Administrasi Publik", "Ilmu Perpustakaan", "Aktuaria"],
-  };
-
-  // ambil rekomendasi dari huruf pertama kode dominan
-  const primary = kode[0];
-  return rekomendasiMap[primary] || [];
 }
 
 module.exports = { createPrediction, getPrediction };

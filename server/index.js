@@ -5,6 +5,7 @@ require("dotenv").config();
 const sessionRoutes = require("./routes/sessions");
 const predictionRoutes = require("./routes/predictions");
 const reviewRoutes = require("./routes/reviews");
+const questionRoutes = require("./routes/questions");
 const errorHandler = require("./middleware/errorHandler");
 
 const app = express();
@@ -18,6 +19,7 @@ app.use(express.json());
 app.use("/api/sessions", sessionRoutes);
 app.use("/api/predictions", predictionRoutes);
 app.use("/api/reviews", reviewRoutes);
+app.use("/api/questions", questionRoutes);
 
 // root endpoint
 app.get("/", (req, res) => {
