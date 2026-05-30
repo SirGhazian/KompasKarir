@@ -139,7 +139,7 @@ export default function UlasanPage() {
                     Prediksi
                   </span>
                   <span className="text-4xl font-extrabold text-[#006a61] font-headline md:text-5xl">
-                    95%
+                    93%
                   </span>
                 </div>
               </div>
