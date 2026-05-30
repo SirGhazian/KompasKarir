@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root {
-  /* warna permukaan */
+  /* warna surface */
   --color-surface: #f8f9ff;
   --color-surface-dim: #cbdbf5;
   --color-surface-bright: #f8f9ff;
@@ -68,6 +68,8 @@
   /* shadows */
   --shadow-nav: 0px 2px 12px rgba(15, 23, 42, 0.08);
   --shadow-card: 0px 4px 20px rgba(15, 23, 42, 0.07);
+  --shadow-hard: 4px 4px 0px var(--color-secondary);
+  --shadow-hard-hover: 8px 8px 0px var(--color-secondary);
 
   /* simpan variabel warna */
   --color-surface: var(--color-surface);
