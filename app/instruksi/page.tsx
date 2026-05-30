@@ -33,15 +33,6 @@ export default function InstruksiPage() {
         <div className="mx-auto max-w-3xl px-6 md:px-12">
           {/* --- header --- */}
           <div className="mb-12 text-center">
-            <Badge
-              variant="category"
-              size="md"
-              colorClass="bg-[#e5f7f5] text-[#006a61]"
-              className="mb-4"
-            >
-              <BsCheckCircleFill size={14} />
-              Persiapan Tes RIASEC
-            </Badge>
             <h1 className="mt-4 text-4xl font-extrabold tracking-tight text-[#0b1c30] md:text-5xl font-headline">
               Sebelum Memulai Tes
             </h1>
