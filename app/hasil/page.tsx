@@ -10,9 +10,10 @@ import { MixSquareCircleQuarter, CircleInCircle } from "@/components/ui/shape";
 import { FaShareAlt, FaArrowRight } from "react-icons/fa";
 import { FaBookOpen } from "react-icons/fa6";
 import { getTipeInfo } from "@/utils/riasecInfo";
-import { getPrediction } from "@/utils/api";
+import { getPrediction, createShare } from "@/utils/api";
 import { TextSkeleton } from "@/components/ui/Skeleton";
 import Skeleton from "@/components/ui/Skeleton";
+import ShareModal from "@/components/ui/ShareModal";
 
 // --- tipe hasil dari backend ---
 interface NarasiData {
@@ -33,6 +34,9 @@ interface HasilPrediksi {
 export default function HasilPage() {
   const [hasil, setHasil] = useState<HasilPrediksi | null>(null);
   const [loading, setLoading] = useState(true);
+  const [shareUrl, setShareUrl] = useState("");
+  const [showShare, setShowShare] = useState(false);
+  const [sharing, setSharing] = useState(false);
 
   useEffect(() => {
     // baca hasil dari localStorage dulu
@@ -174,10 +178,27 @@ export default function HasilPage() {
                 <FaBookOpen size={16} />
                 Pelajari Lebih Lanjut
               </Button>
-              <Button href="#" variant="secondary" size="md">
+              <button
+                onClick={async () => {
+                  if (sharing || !hasil) return;
+                  setSharing(true);
+                  try {
+                    const res = await createShare(hasil as unknown as Record<string, unknown>);
+                    setShareUrl(`${window.location.origin}/share/${res.shareId}`);
+                    setShowShare(true);
+                  } catch (err) {
+                    console.error("Gagal membuat share:", err);
+                    alert("Gagal membuat link bagikan. Coba lagi.");
+                  } finally {
+                    setSharing(false);
+                  }
+                }}
+                disabled={sharing}
+                className="inline-flex items-center justify-center gap-2.5 rounded-2xl border-2 border-[#c6c6cd] bg-white px-8 py-4 text-base font-semibold text-[#0b1c30] transition-all duration-200 hover:border-[#006a61] hover:text-[#006a61] active:scale-95 font-sans disabled:cursor-not-allowed disabled:opacity-60 cursor-pointer"
+              >
                 <FaShareAlt size={16} />
-                Bagikan
-              </Button>
+                {sharing ? "Memproses..." : "Bagikan"}
+              </button>
             </div>
             {/* kanan */}
             <div>
@@ -240,6 +261,7 @@ export default function HasilPage() {
         </div>
       </main>
 
+      <ShareModal isOpen={showShare} onClose={() => setShowShare(false)} shareUrl={shareUrl} />
       <Footer />
     </>
   );
