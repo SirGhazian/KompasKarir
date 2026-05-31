@@ -97,7 +97,7 @@ export async function getPrediction(id: string) {
   return res.json();
 }
 
-// ambil semua ulasan (publik, tanpa auth)
+// ambil semua ulasan (publik, tanpa auth cuyyy)
 export async function getReviews() {
   const res = await fetch(`${BASE_URL}/api/reviews`);
 
@@ -130,4 +130,31 @@ export async function checkMyReview(): Promise<boolean> {
   if (res.status === 404) return false;
   if (!res.ok) return false;
   return true;
+}
+
+// buat share link (simpan hasil ke firestore)
+export async function createShare(hasil: Record<string, unknown>): Promise<{ shareId: string }> {
+  const res = await authFetch("/api/shares", {
+    method: "POST",
+    body: JSON.stringify({ hasil }),
+  });
+
+  if (!res.ok) {
+    const err = await res.json();
+    throw new Error(err.error || "Gagal membuat link bagikan");
+  }
+
+  return res.json();
+}
+
+// ambil data share (publik, tanpa auth)
+export async function getShareData(id: string) {
+  const res = await fetch(`${BASE_URL}/api/shares/${id}`);
+
+  if (!res.ok) {
+    const err = await res.json();
+    throw new Error(err.error || "Link tidak valid");
+  }
+
+  return res.json();
 }
