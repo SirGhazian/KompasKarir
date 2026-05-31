@@ -94,12 +94,12 @@ export default function InstruksiPage() {
             </div>
           </div>
 
-          <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
-            <Button href="/tentang" variant="secondary" size="md">
+          <div className="flex flex-col-reverse items-center justify-between gap-4 md:flex-row">
+            <Button href="/tentang" variant="secondary" size="md" className="w-full md:w-auto">
               <FaBookOpen size={16} />
               Pelajari Tentang RIASEC
             </Button>
-            <Button href="/quiz" variant="primary" size="md">
+            <Button href="/quiz" variant="primary" size="md" className="w-full md:w-auto">
               Mulai Tes
               <FaArrowRight size={16} />
             </Button>
