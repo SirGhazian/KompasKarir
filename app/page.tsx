@@ -41,7 +41,9 @@ export default function LandingPage() {
 
       <main className="flex-1">
         {/* --- hero section --- */}
-        <section className="relative flex min-h-svh flex-col items-center justify-center overflow-hidden bg-white mt-[-72px] pt-[72px] pb-10 md:pb-0">
+        <section className="relative flex min-h-svh flex-col items-center justify-center overflow-hidden bg-white mt-[-72px] pt-[72px] pb-10 md:pb-0 px-4 md:px-0">
+          {/* spacer mobile atas */}
+          <div className="h-8 md:hidden" />
           {/* dekorasi latar belakang */}
           <div className="absolute inset-0 -z-10 bg-hero-radial" />
           <MixSquareCircleQuarter
@@ -86,7 +88,12 @@ export default function LandingPage() {
 
                 {/* tombol cta */}
                 <div className="flex flex-col items-center gap-4 sm:flex-row">
-                  <Button href="/instruksi" variant="primary" size="md" className="group">
+                  <Button
+                    href="/instruksi"
+                    variant="primary"
+                    size="md"
+                    className="group w-full sm:w-auto"
+                  >
                     Mulai Tes Sekarang
                     <FaArrowRight
                       className="transition-transform group-hover:translate-x-1"
@@ -94,7 +101,12 @@ export default function LandingPage() {
                     />
                   </Button>
 
-                  <Button href="/tentang" variant="secondary" size="md">
+                  <Button
+                    href="/tentang"
+                    variant="secondary"
+                    size="md"
+                    className="w-full sm:w-auto"
+                  >
                     Pelajari Lebih Lanjut
                   </Button>
                 </div>
