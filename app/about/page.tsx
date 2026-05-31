@@ -171,7 +171,7 @@ export default function AboutPage() {
                 return (
                   <div
                     key={anggota.id}
-                    className="group relative rounded-3xl border-2 border-[#e5eeff] bg-white p-8 transition-all duration-300 hover:border-[#006a61] hover:shadow-[var(--shadow-hard)]"
+                    className="group relative rounded-3xl border-2 border-[#006a61] bg-white p-8 shadow-[var(--shadow-hard)] transition-all duration-300 hover:-translate-x-1 hover:-translate-y-1 hover:shadow-[var(--shadow-hard-hover)]"
                   >
                     {/* id peserta */}
                     <p className="mt-4 text-[11px] font-mono text-[#76777d] tracking-wide">
