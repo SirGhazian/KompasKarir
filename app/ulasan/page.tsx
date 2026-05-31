@@ -57,7 +57,7 @@ export default function UlasanPage() {
 
       <main className="min-h-screen bg-white">
         {/* --- hero section --- */}
-        <section className="relative overflow-hidden bg-white py-16 md:py-24">
+        <section className="relative overflow-hidden bg-white pt-8 pb-16 md:py-24">
           <div className="mx-auto max-w-4xl px-6 md:px-12 text-center">
             <h1 className="mb-6 mx-auto max-w-4xl text-3xl font-extrabold leading-tight tracking-tight text-[#0b1c30] md:text-5xl lg:text-6xl font-headline">
               Kisah{" "}
