@@ -1,103 +1,124 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import Button from "@/components/ui/Button";
 import Select from "@/components/ui/Select";
 import Pagination from "@/components/ui/Pagination";
 import ReviewModal from "@/components/ui/ReviewModal";
+import KampusDetailModal from "@/components/ui/KampusDetailModal";
 import { FaMapMarkerAlt, FaMoneyBillWave } from "react-icons/fa";
 import { submitReview, checkMyReview } from "@/utils/api";
+import { matchProdiToKampus, getUktRange, formatRupiah, extractKota } from "@/utils/matchKampus";
+import type { KampusEntry } from "@/utils/dataKampus";
 
-// --- data dummy jurusan ---
-const jurusanData = [
-  {
-    id: 1,
-    universitas: "Universitas Indonesia",
-    nama: "Teknik Informatika",
-    lokasi: "Depok, Jawa Barat",
-    biaya: "Rp 8.000.000 / semester",
-    deskripsi:
-      "Program studi yang mempelajari pengembangan perangkat lunak, algoritma, dan sistem komputasi modern.",
-  },
-  {
-    id: 2,
-    universitas: "Institut Teknologi Bandung",
-    nama: "Sistem Informasi",
-    lokasi: "Bandung, Jawa Barat",
-    biaya: "Rp 12.000.000 / semester",
-    deskripsi:
-      "Menggabungkan teknologi informasi dengan manajemen bisnis untuk solusi digital yang efektif.",
-  },
-  {
-    id: 3,
-    universitas: "Universitas Gadjah Mada",
-    nama: "Ilmu Komputer",
-    lokasi: "Yogyakarta",
-    biaya: "Rp 7.500.000 / semester",
-    deskripsi:
-      "Fokus pada fondasi ilmiah komputasi, kecerdasan buatan, dan pemrosesan data skala besar.",
-  },
-  {
-    id: 4,
-    universitas: "Universitas Brawijaya",
-    nama: "Teknologi Informasi",
-    lokasi: "Malang, Jawa Timur",
-    biaya: "Rp 6.000.000 / semester",
-    deskripsi:
-      "Program studi yang menekankan penerapan teknologi untuk memecahkan permasalahan nyata di masyarakat.",
-  },
-  {
-    id: 5,
-    universitas: "Universitas Diponegoro",
-    nama: "Teknik Komputer",
-    lokasi: "Semarang, Jawa Tengah",
-    biaya: "Rp 6.500.000 / semester",
-    deskripsi:
-      "Mempelajari perancangan hardware dan software embedded system serta jaringan komputer.",
-  },
-  {
-    id: 6,
-    universitas: "Universitas Airlangga",
-    nama: "Statistika",
-    lokasi: "Surabaya, Jawa Timur",
-    biaya: "Rp 7.000.000 / semester",
-    deskripsi:
-      "Mengembangkan kemampuan analisis data dan pemodelan statistik untuk berbagai bidang terapan.",
-  },
-];
+// tipe rekomendasi dari AI
+interface ProdiAI {
+  program_name: string;
+  similarity_persen: number;
+}
+interface RekomendasiAI {
+  rumpun: string;
+  kecocokan_persen: number;
+  prodi_tersedia: ProdiAI[];
+}
 
-// --- pagination ---
-const ITEMS_PER_PAGE = 4;
-const totalPages = Math.ceil(jurusanData.length / ITEMS_PER_PAGE);
+const ITEMS_PER_PAGE = 6;
 
-// --- halaman rekomendasi jurusan ---
 export default function RekomendasiPage() {
   const [currentPage, setCurrentPage] = useState(1);
-  const [lokasi, setLokasi] = useState("");
-  const [biaya, setBiaya] = useState("");
+  const [filterKota, setFilterKota] = useState("");
+  const [filterUkt, setFilterUkt] = useState("");
   const [showReview, setShowReview] = useState(false);
   const [hasReviewed, setHasReviewed] = useState(false);
   const [hasResult, setHasResult] = useState(true);
+  const [rekomendasi, setRekomendasi] = useState<RekomendasiAI[]>([]);
+  const [detailData, setDetailData] = useState<KampusEntry | null>(null);
+  const [showDetail, setShowDetail] = useState(false);
 
-  // cek apakah user sudah mengerjakan tes
+  // baca hasil dari localStorage
   useEffect(() => {
     const cached = localStorage.getItem("kk_hasil");
-    const id = localStorage.getItem("kk_prediction_id");
-    if (!cached && !id) {
+    if (!cached) {
+      const id = localStorage.getItem("kk_prediction_id");
+      if (!id) setHasResult(false);
+      return;
+    }
+    try {
+      const hasil = JSON.parse(cached);
+      if (hasil.rekomendasi) {
+        setRekomendasi(hasil.rekomendasi);
+      }
+    } catch {
       setHasResult(false);
     }
   }, []);
 
-  // cek apakah user sudah pernah memberi ulasan
+  // cek review
   useEffect(() => {
     checkMyReview().then((exists) => setHasReviewed(exists));
   }, []);
 
-  // data per halaman
+  // match prodi AI ke dataKampus
+  const matchedKampus = useMemo(() => {
+    const results: KampusEntry[] = [];
+    for (const rek of rekomendasi) {
+      for (const prodi of rek.prodi_tersedia) {
+        const matches = matchProdiToKampus(prodi.program_name);
+        for (const m of matches) {
+          // hindari duplikat
+          if (
+            !results.find(
+              (r) => r.universitas === m.universitas && r.programStudi === m.programStudi,
+            )
+          ) {
+            results.push(m);
+          }
+        }
+      }
+    }
+    return results;
+  }, [rekomendasi]);
+
+  // daftar kota unik untuk filter
+  const kotaOptions = useMemo(() => {
+    const kotas = new Set<string>();
+    matchedKampus.forEach((k) => {
+      const kota = extractKota(k.lokasi);
+      kotas.add(kota);
+    });
+    return Array.from(kotas)
+      .sort()
+      .map((k) => ({ value: k, label: k }));
+  }, [matchedKampus]);
+
+  // filter data
+  const filteredData = useMemo(() => {
+    let data = matchedKampus;
+
+    if (filterKota) {
+      data = data.filter((k) => extractKota(k.lokasi) === filterKota);
+    }
+
+    if (filterUkt) {
+      // filter: hanya tampilkan kampus yang punya data UKT di kelompok tersebut
+      const kelIdx = parseInt(filterUkt) - 1;
+      data = data.filter((k) => k.ukt[kelIdx] !== null && k.ukt[kelIdx] !== undefined);
+    }
+
+    return data;
+  }, [matchedKampus, filterKota, filterUkt]);
+
+  // pagination
+  const totalPages = Math.ceil(filteredData.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const currentData = jurusanData.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  const currentData = filteredData.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+
+  // reset page saat filter berubah
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [filterKota, filterUkt]);
 
   // proteksi: belum tes
   if (!hasResult) {
@@ -129,10 +150,9 @@ export default function RekomendasiPage() {
       <Navbar />
 
       <main className="min-h-screen bg-[#f8f9ff]">
-        {/* --- section header + filter (bg hijau) --- */}
+        {/* --- header + filter --- */}
         <section className="bg-[#006a61] py-10 md:py-14">
           <div className="mx-auto max-w-6xl px-4 md:px-8">
-            {/* --- header --- */}
             <div className="mb-8">
               <h1 className="text-3xl font-extrabold tracking-tight text-white md:text-4xl font-headline">
                 Rekomendasi Jurusan
@@ -142,98 +162,136 @@ export default function RekomendasiPage() {
               </p>
             </div>
 
-            {/* --- filter bar --- */}
+            {/* filter bar */}
             <div className="flex flex-col gap-3 rounded-2xl bg-white p-5 shadow-card sm:flex-row sm:items-center">
-              {/* dropdown lokasi */}
               <Select
-                placeholder="Lokasi"
-                value={lokasi}
-                onChange={setLokasi}
+                placeholder="Semua Lokasi"
+                value={filterKota}
+                onChange={setFilterKota}
+                options={[{ value: "", label: "Semua Lokasi" }, ...kotaOptions]}
+                className="flex-1"
+              />
+              <Select
+                placeholder="Semua Kelompok"
+                value={filterUkt}
+                onChange={setFilterUkt}
                 options={[
-                  { value: "jawa-barat", label: "Jawa Barat" },
-                  { value: "jawa-tengah", label: "Jawa Tengah" },
-                  { value: "jawa-timur", label: "Jawa Timur" },
-                  { value: "yogyakarta", label: "Yogyakarta" },
-                  { value: "lainnya", label: "Lainnya" },
+                  { value: "", label: "Semua Kelompok" },
+                  { value: "1", label: "Kelompok 1" },
+                  { value: "2", label: "Kelompok 2" },
+                  { value: "3", label: "Kelompok 3" },
+                  { value: "4", label: "Kelompok 4" },
+                  { value: "5", label: "Kelompok 5" },
+                  { value: "6", label: "Kelompok 6" },
+                  { value: "7", label: "Kelompok 7" },
+                  { value: "8", label: "Kelompok 8" },
+                  { value: "9", label: "Kelompok 9" },
+                  { value: "10", label: "Kelompok 10" },
+                  { value: "11", label: "Kelompok 11" },
                 ]}
                 className="flex-1"
               />
-
-              {/* dropdown biaya */}
-              <Select
-                placeholder="Biaya"
-                value={biaya}
-                onChange={setBiaya}
-                options={[
-                  { value: "rendah", label: "< Rp 7.000.000" },
-                  { value: "sedang", label: "Rp 7.000.000 – 10.000.000" },
-                  { value: "tinggi", label: "> Rp 10.000.000" },
-                ]}
-                className="flex-1"
-              />
-
-              {/* tombol terapkan */}
-              <Button variant="primary" size="sm">
-                Terapkan
-              </Button>
+              <button
+                onClick={() => {
+                  setFilterKota("");
+                  setFilterUkt("");
+                }}
+                className="rounded-xl border-2 border-[#c6c6cd] bg-white px-5 py-2.5 text-sm font-semibold text-[#45464d] transition-colors hover:border-[#006a61] hover:text-[#006a61] font-sans cursor-pointer"
+              >
+                Reset
+              </button>
             </div>
           </div>
         </section>
 
-        {/* --- grid jurusan --- */}
+        {/* --- grid kampus --- */}
         <section className="py-10 md:py-14">
           <div className="mx-auto max-w-6xl px-4 md:px-8">
+            {/* info jumlah */}
+            <p className="mb-6 text-sm text-[#76777d] font-sans">
+              Menampilkan {filteredData.length} program studi
+            </p>
+
+            {filteredData.length === 0 && (
+              <p className="text-center text-base text-[#45464d] font-sans py-10">
+                Tidak ada program studi yang cocok dengan filter saat ini.
+              </p>
+            )}
+
             <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
-              {currentData.map((jurusan) => (
-                <div
-                  key={jurusan.id}
-                  className="flex flex-col rounded-3xl bg-white p-6 shadow-card"
-                >
-                  {/* header card */}
-                  <div className="mb-3">
-                    <span className="text-xs font-semibold text-[#76777d] font-sans">
-                      {jurusan.universitas}
+              {currentData.map((kampus, idx) => {
+                return (
+                  <div
+                    key={`${kampus.universitas}-${kampus.programStudi}-${idx}`}
+                    className="flex flex-col rounded-3xl bg-white p-6 shadow-card"
+                  >
+                    {/* universitas */}
+                    <span className="mb-2 text-xs font-semibold text-[#76777d] font-sans">
+                      {kampus.universitas}
                     </span>
+
+                    {/* prodi */}
+                    <h3 className="mb-1 text-lg font-bold text-[#0b1c30] font-headline">
+                      {kampus.programStudi}
+                    </h3>
+
+                    {/* jenjang + rumpun */}
+                    <span className="mb-3 text-xs text-[#45464d] font-sans">
+                      {kampus.jenjang} · {kampus.rumpunKeilmuan}
+                    </span>
+
+                    {/* lokasi */}
+                    <span className="mb-1.5 flex items-center gap-2 text-xs text-[#45464d] font-sans">
+                      <FaMapMarkerAlt size={11} className="shrink-0 text-[#006a61]" />
+                      {extractKota(kampus.lokasi)}
+                    </span>
+
+                    {/* ukt */}
+                    {(() => {
+                      if (filterUkt) {
+                        const kelIdx = parseInt(filterUkt) - 1;
+                        const nilai = kampus.ukt[kelIdx];
+                        return nilai !== null && nilai !== undefined ? (
+                          <span className="mb-4 flex items-center gap-2 text-xs text-[#45464d] font-sans">
+                            <FaMoneyBillWave size={11} className="shrink-0 text-[#006a61]" />
+                            Kelompok {filterUkt}: {formatRupiah(nilai)}
+                          </span>
+                        ) : null;
+                      }
+                      const uktRange = getUktRange(kampus.ukt);
+                      return uktRange ? (
+                        <span className="mb-4 flex items-center gap-2 text-xs text-[#45464d] font-sans">
+                          <FaMoneyBillWave size={11} className="shrink-0 text-[#006a61]" />
+                          {formatRupiah(uktRange.min)} – {formatRupiah(uktRange.max)}
+                        </span>
+                      ) : null;
+                    })()}
+
+                    {/* tombol detail ukt */}
+                    <button
+                      onClick={() => {
+                        setDetailData(kampus);
+                        setShowDetail(true);
+                      }}
+                      className="mt-auto w-full rounded-xl border-2 border-[#c6c6cd] bg-white px-4 py-2.5 text-sm font-semibold text-[#0b1c30] transition-colors hover:border-[#006a61] hover:text-[#006a61] font-sans cursor-pointer"
+                    >
+                      Detail UKT
+                    </button>
                   </div>
-
-                  {/* nama jurusan */}
-                  <h3 className="mb-3 text-xl font-bold text-[#0b1c30] font-headline">
-                    {jurusan.nama}
-                  </h3>
-
-                  {/* info lokasi & biaya */}
-                  <div className="mb-3 flex flex-col gap-1.5">
-                    <span className="flex items-center gap-2 text-xs text-[#45464d] font-sans">
-                      <FaMapMarkerAlt size={12} className="text-[#006a61]" />
-                      {jurusan.lokasi}
-                    </span>
-                    <span className="flex items-center gap-2 text-xs text-[#45464d] font-sans">
-                      <FaMoneyBillWave size={12} className="text-[#006a61]" />
-                      {jurusan.biaya}
-                    </span>
-                  </div>
-
-                  {/* deskripsi */}
-                  <p className="mb-5 flex-1 text-sm leading-relaxed text-[#45464d] font-sans">
-                    {jurusan.deskripsi}
-                  </p>
-
-                  {/* tombol detail */}
-                  <Button href="#" variant="secondary" size="sm" className="w-full">
-                    Lihat Detail
-                  </Button>
-                </div>
-              ))}
+                );
+              })}
             </div>
 
-            {/* --- pagination --- */}
-            <div className="mt-10">
-              <Pagination
-                currentPage={currentPage}
-                totalPages={totalPages}
-                onPageChange={setCurrentPage}
-              />
-            </div>
+            {/* pagination */}
+            {totalPages > 1 && (
+              <div className="mt-10">
+                <Pagination
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  onPageChange={setCurrentPage}
+                />
+              </div>
+            )}
           </div>
         </section>
 
@@ -282,7 +340,7 @@ export default function RekomendasiPage() {
         </section>
       </main>
 
-      {/* modal ulasan */}
+      {/* modal review */}
       <ReviewModal
         isOpen={showReview}
         onClose={() => setShowReview(false)}
@@ -296,6 +354,13 @@ export default function RekomendasiPage() {
             alert(message);
           }
         }}
+      />
+
+      {/* modal detail kampus */}
+      <KampusDetailModal
+        isOpen={showDetail}
+        onClose={() => setShowDetail(false)}
+        data={detailData}
       />
 
       <Footer />
