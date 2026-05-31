@@ -6,6 +6,7 @@ const sessionRoutes = require("./routes/sessions");
 const predictionRoutes = require("./routes/predictions");
 const reviewRoutes = require("./routes/reviews");
 const questionRoutes = require("./routes/questions");
+const shareRoutes = require("./routes/shares");
 const errorHandler = require("./middleware/errorHandler");
 
 const app = express();
@@ -20,6 +21,7 @@ app.use("/api/sessions", sessionRoutes);
 app.use("/api/predictions", predictionRoutes);
 app.use("/api/reviews", reviewRoutes);
 app.use("/api/questions", questionRoutes);
+app.use("/api/shares", shareRoutes);
 
 // root endpoint
 app.get("/", (req, res) => {
