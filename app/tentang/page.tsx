@@ -107,7 +107,7 @@ export default function TentangPage() {
 
       <main className="min-h-screen">
         {/* --- hero section --- */}
-        <section className="relative overflow-hidden py-20 md:py-0 bg-white">
+        <section className="relative overflow-hidden pt-8 pb-20 md:py-0 bg-white">
           {/* split background */}
           <div className="absolute right-0 top-0 bottom-0 hidden w-1/2 bg-[#e5f7f5] md:block" />
           <div className="absolute inset-0 -z-10 bg-hero-radial" />
@@ -115,7 +115,7 @@ export default function TentangPage() {
           <div className="mx-auto max-w-7xl px-6 md:px-12 relative z-10">
             <div className="grid grid-cols-1 gap-12 md:grid-cols-2 md:items-stretch">
               {/* teks utama */}
-              <div className="py-20 md:py-32">
+              <div className="py-8 md:py-32">
                 <h1 className="mt-4 text-4xl font-extrabold tracking-tight text-[#0b1c30] md:text-5xl font-headline">
                   Tentang Metode <span className="text-secondary">RIASEC</span>
                 </h1>
