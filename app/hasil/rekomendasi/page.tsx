@@ -308,6 +308,7 @@ export default function RekomendasiPage() {
                     </p>
                     <a
                       href="/ulasan"
+                      target="_blank"
                       className="inline-flex cursor-pointer items-center justify-center gap-2.5 rounded-2xl border-2 border-white bg-white px-8 py-4 text-base font-semibold text-[#006a61] transition-all duration-200 hover:bg-transparent hover:text-white active:scale-95 font-sans"
                     >
                       Lihat Ulasan
