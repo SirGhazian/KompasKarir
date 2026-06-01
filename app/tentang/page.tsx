@@ -120,10 +120,10 @@ export default function TentangPage() {
                   Tentang Metode <span className="text-secondary">RIASEC</span>
                 </h1>
                 <p className="mt-6 text-base leading-relaxed text-[#45464d] font-sans">
-                  Metode RIASEC dikembangkan oleh <strong>Dr. John L. Holland</strong>. Teori ini
-                  berpendapat bahwa pilihan jurusan merupakan ekspresi dari kepribadian, dan orang
-                  yang belajar dalam lingkungan yang mirip dengan kepribadian mereka akan lebih
-                  sukses dan puas.
+                  Metode RIASEC dikembangkan oleh <strong>Dr. John L. Holland</strong> (1959). Teori
+                  ini berpendapat bahwa pilihan jurusan merupakan ekspresi dari kepribadian, dan
+                  orang yang belajar dalam lingkungan yang mirip dengan kepribadian mereka akan
+                  lebih sukses dan puas.
                 </p>
                 <div className="mt-8">
                   <Button href="/instruksi" variant="primary" size="md">
