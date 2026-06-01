@@ -1,4 +1,12 @@
-# KompasKarir
+<div align="left">
+<picture>
+  <source srcset="https://raw.githubusercontent.com/SirGhazian/kompas-karir/refs/heads/main/public/images/app-logo.png?token=GHSAT0AAAAAADVDORKRRPUPVFPEQMPTFQXE2Q5QZ6Q">
+  <img alt="Header" height="100" >
+</picture>
+</div>
+
+<img src="https://github.com/user-attachments/assets/d37a62f7-650a-4886-81c9-d3809d3ddeed" width="100%" height="2px"/>
+<p/>
 
 Platform asesmen berbasis AI yang membantu siswa SMA/SMK menemukan jurusan kuliah yang tepat melalui tes kepribadian RIASEC dan analisis nilai akademik.
 
@@ -117,12 +125,12 @@ npm start
 
 | ID             | Nama                                  | Peran                    |
 | -------------- | ------------------------------------- | ------------------------ |
-| CFCC282D6Y0786 | Muhammad Ghazian Tsaqif Zhafiri Andoz | Full-Stack Web Developer |
-| CACC282D6X0960 | Setya Carina Rianti                   | AI Engineer              |
-| CACC282D6Y0961 | Ridho Hamdani Putra                   | AI Engineer              |
-| CDCC012D6Y1245 | Muhammad Firman Ardiansyah            | Data Scientist           |
 | CDCC282D6Y1250 | Carli Tamba                           | Data Scientist           |
+| CDCC012D6Y1245 | Muhammad Firman Ardiansyah            | Data Scientist           |
+| CFCC282D6Y0786 | Muhammad Ghazian Tsaqif Zhafiri Andoz | Full-Stack Web Developer |
 | CFCC955D6Y1821 | Dhimas Setyo Wahyu Santoso            | Full-Stack Web Developer |
+| CACC282D6Y0961 | Ridho Hamdani Putra                   | AI Engineer              |
+| CACC282D6X0960 | Setya Carina Rianti                   | AI Engineer              |
 
 ## Lisensi
 
