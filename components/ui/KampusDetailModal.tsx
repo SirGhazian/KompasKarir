@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { FaXmark } from "react-icons/fa6";
 import type { KampusEntry } from "@/utils/dataKampus";
 import { formatRupiah } from "@/utils/matchKampus";
@@ -10,7 +11,30 @@ interface KampusDetailModalProps {
   data: KampusEntry | null;
 }
 
+const golonganLabels = [
+  "Golongan I",
+  "Golongan II",
+  "Golongan III",
+  "Golongan IV",
+  "Golongan V",
+  "Golongan VI",
+  "Golongan VII",
+  "Golongan VIII",
+];
+
 export default function KampusDetailModal({ isOpen, onClose, data }: KampusDetailModalProps) {
+  // disable body scroll saat modal terbuka
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isOpen]);
+
   if (!isOpen || !data) return null;
 
   return (
@@ -36,9 +60,7 @@ export default function KampusDetailModal({ isOpen, onClose, data }: KampusDetai
           <h3 className="mt-1 text-xl font-extrabold text-[#0b1c30] font-headline">
             {data.programStudi}
           </h3>
-          <p className="mt-1 text-sm text-[#45464d] font-sans">
-            {data.jenjang} · {data.rumpunKeilmuan}
-          </p>
+          <p className="mt-1 text-sm text-[#45464d] font-sans">{data.jenjang}</p>
         </div>
 
         {/* info */}
@@ -55,25 +77,31 @@ export default function KampusDetailModal({ isOpen, onClose, data }: KampusDetai
             </span>
             <p className="mt-0.5 text-sm text-[#45464d] font-sans">{data.lokasi}</p>
           </div>
+          <div>
+            <span className="text-xs font-bold uppercase tracking-widest text-[#006a61] font-sans">
+              Provinsi
+            </span>
+            <p className="mt-0.5 text-sm text-[#45464d] font-sans">{data.provinsi}</p>
+          </div>
         </div>
 
         {/* tabel ukt */}
         <div>
           <span className="text-xs font-bold uppercase tracking-widest text-[#006a61] font-sans">
-            UKT per Kelompok
+            UKT per Golongan
           </span>
           <div className="mt-3 overflow-hidden rounded-2xl border border-[#e5eeff]">
             <table className="w-full text-sm font-sans">
               <thead>
                 <tr className="bg-[#f8f9ff]">
-                  <th className="px-4 py-2.5 text-left font-semibold text-[#45464d]">Kelompok</th>
+                  <th className="px-4 py-2.5 text-left font-semibold text-[#45464d]">Golongan</th>
                   <th className="px-4 py-2.5 text-right font-semibold text-[#45464d]">UKT</th>
                 </tr>
               </thead>
               <tbody>
-                {data.ukt.map((nilai, idx) => (
+                {data.ukt.map((nilai: number | null, idx: number) => (
                   <tr key={idx} className="border-t border-[#e5eeff]">
-                    <td className="px-4 py-2.5 text-[#0b1c30]">Kelompok {idx + 1}</td>
+                    <td className="px-4 py-2.5 text-[#0b1c30]">{golonganLabels[idx]}</td>
                     <td className="px-4 py-2.5 text-right font-semibold text-[#006a61]">
                       {nilai !== null ? formatRupiah(nilai) : "—"}
                     </td>

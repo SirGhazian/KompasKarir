@@ -8,7 +8,38 @@ interface PaginationProps {
   onPageChange: (page: number) => void;
 }
 
+// hitung halaman yang ditampilkan (max 7 item)
+function getPageNumbers(current: number, total: number): (number | "...")[] {
+  if (total <= 7) {
+    return Array.from({ length: total }, (_, i) => i + 1);
+  }
+
+  const pages: (number | "...")[] = [];
+
+  if (current <= 4) {
+    for (let i = 1; i <= 5; i++) pages.push(i);
+    pages.push("...");
+    pages.push(total);
+  } else if (current >= total - 3) {
+    pages.push(1);
+    pages.push("...");
+    for (let i = total - 4; i <= total; i++) pages.push(i);
+  } else {
+    pages.push(1);
+    pages.push("...");
+    pages.push(current - 1);
+    pages.push(current);
+    pages.push(current + 1);
+    pages.push("...");
+    pages.push(total);
+  }
+
+  return pages;
+}
+
 export default function Pagination({ currentPage, totalPages, onPageChange }: PaginationProps) {
+  const pages = getPageNumbers(currentPage, totalPages);
+
   return (
     <div className="flex items-center justify-center gap-2">
       {/* prev */}
@@ -26,8 +57,18 @@ export default function Pagination({ currentPage, totalPages, onPageChange }: Pa
       </button>
 
       {/* nomor halaman */}
-      {Array.from({ length: totalPages }).map((_, i) => {
-        const page = i + 1;
+      {pages.map((page, i) => {
+        if (page === "...") {
+          return (
+            <span
+              key={`ellipsis-${i}`}
+              className="flex h-10 w-10 items-center justify-center text-sm text-[#76777d] font-sans"
+            >
+              ...
+            </span>
+          );
+        }
+
         const isActive = page === currentPage;
         return (
           <button
