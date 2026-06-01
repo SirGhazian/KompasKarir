@@ -19,10 +19,22 @@ interface NarasiData {
   saran_pengembangan: string;
 }
 
+interface ProdiTersedia {
+  program_name: string;
+  similarity_persen: number;
+}
+
+interface RekomendasiRumpun {
+  rumpun: string;
+  kecocokan_persen: number;
+  prodi_tersedia: ProdiTersedia[];
+}
+
 interface HasilShare {
   kode_riasec: string;
   prediksi_utama: string;
   narasi: NarasiData | null;
+  rekomendasi?: RekomendasiRumpun[];
   skorRiasec: { r: number; i: number; a: number; s: number; e: number; c: number };
 }
 
@@ -152,12 +164,36 @@ export default function SharePage() {
           </div>
         </section>
 
-        {/* === narasi detail (sama dengan halaman hasil) === */}
-        {hasil.narasi && (
+        {/* === narasi detail === */}
+        {(hasil.narasi || (hasil.rekomendasi && hasil.rekomendasi.length > 0)) && (
           <section className="bg-[#f8f9ff] py-12 md:py-16">
             <div className="mx-auto max-w-4xl px-6 md:px-12 flex flex-col gap-6">
+              {/* rekomendasi prodi (style card kekuatan) */}
+              {hasil.rekomendasi && hasil.rekomendasi.length > 0 && (
+                <div className="rounded-3xl bg-white p-8">
+                  <h3 className="mb-1 text-lg font-bold text-[#0b1c30] font-headline">
+                    {hasil.rekomendasi[0].rumpun}
+                  </h3>
+                  <p className="mb-4 text-xs text-[#76777d] font-sans">
+                    Rumpun paling cocok dengan profilmu
+                  </p>
+                  <ul className="flex flex-col gap-2">
+                    {hasil.rekomendasi[0].prodi_tersedia.slice(0, 3).map((prodi, i) => (
+                      <li key={i} className="flex items-start gap-3">
+                        <span className="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#e5f7f5] text-xs font-bold text-[#006a61]">
+                          {i + 1}
+                        </span>
+                        <span className="text-sm leading-relaxed text-[#45464d] font-sans">
+                          {prodi.program_name}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
               {/* kekuatan */}
-              {hasil.narasi.kekuatan.length > 0 && (
+              {hasil.narasi && hasil.narasi.kekuatan.length > 0 && (
                 <div className="rounded-3xl bg-white p-8">
                   <h3 className="mb-4 text-lg font-bold text-[#0b1c30] font-headline">Kekuatan</h3>
                   <ul className="flex flex-col gap-2">
@@ -176,7 +212,7 @@ export default function SharePage() {
               )}
 
               {/* alasan kecocokan */}
-              {hasil.narasi.alasan_kecocokan && (
+              {hasil.narasi && hasil.narasi.alasan_kecocokan && (
                 <div className="rounded-3xl bg-white p-8">
                   <h3 className="mb-3 text-lg font-bold text-[#0b1c30] font-headline">
                     Mengapa Cocok
