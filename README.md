@@ -1,4 +1,4 @@
-<div align="left">
+<div align="center">
 <picture>
   <source srcset="https://raw.githubusercontent.com/SirGhazian/kompas-karir/refs/heads/main/public/images/app-logo.png?token=GHSAT0AAAAAADVDORKRRPUPVFPEQMPTFQXE2Q5QZ6Q">
   <img alt="Header" height="100" >
