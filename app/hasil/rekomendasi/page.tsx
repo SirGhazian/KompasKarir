@@ -10,7 +10,12 @@ import ReviewModal from "@/components/ui/ReviewModal";
 import KampusDetailModal from "@/components/ui/KampusDetailModal";
 import { FaMapMarkerAlt, FaMoneyBillWave } from "react-icons/fa";
 import { submitReview, checkMyReview } from "@/utils/api";
-import { matchProdiToKampus, getUktRange, formatRupiah, extractKota } from "@/utils/matchKampus";
+import {
+  matchProdiToKampus,
+  getUktRange,
+  formatRupiah,
+  getProvinsiList,
+} from "@/utils/matchKampus";
 import type { KampusEntry } from "@/utils/dataKampus";
 
 // tipe rekomendasi dari AI
@@ -28,7 +33,7 @@ const ITEMS_PER_PAGE = 6;
 
 export default function RekomendasiPage() {
   const [currentPage, setCurrentPage] = useState(1);
-  const [filterKota, setFilterKota] = useState("");
+  const [filterProvinsi, setFilterProvinsi] = useState("");
   const [filterUkt, setFilterUkt] = useState("");
   const [showReview, setShowReview] = useState(false);
   const [hasReviewed, setHasReviewed] = useState(false);
@@ -67,7 +72,6 @@ export default function RekomendasiPage() {
       for (const prodi of rek.prodi_tersedia) {
         const matches = matchProdiToKampus(prodi.program_name);
         for (const m of matches) {
-          // hindari duplikat
           if (
             !results.find(
               (r) => r.universitas === m.universitas && r.programStudi === m.programStudi,
@@ -81,34 +85,33 @@ export default function RekomendasiPage() {
     return results;
   }, [rekomendasi]);
 
-  // daftar kota unik untuk filter
-  const kotaOptions = useMemo(() => {
-    const kotas = new Set<string>();
+  // daftar provinsi untuk filter
+  const provinsiOptions = useMemo(() => {
+    const set = new Set<string>();
     matchedKampus.forEach((k) => {
-      const kota = extractKota(k.lokasi);
-      kotas.add(kota);
+      if (k.provinsi) set.add(k.provinsi);
     });
-    return Array.from(kotas)
+    return Array.from(set)
       .sort()
-      .map((k) => ({ value: k, label: k }));
+      .map((p) => ({ value: p, label: p }));
   }, [matchedKampus]);
 
   // filter data
   const filteredData = useMemo(() => {
     let data = matchedKampus;
 
-    if (filterKota) {
-      data = data.filter((k) => extractKota(k.lokasi) === filterKota);
+    if (filterProvinsi) {
+      data = data.filter((k) => k.provinsi === filterProvinsi);
     }
 
     if (filterUkt) {
-      // filter: hanya tampilkan kampus yang punya data UKT di kelompok tersebut
-      const kelIdx = parseInt(filterUkt) - 1;
-      data = data.filter((k) => k.ukt[kelIdx] !== null && k.ukt[kelIdx] !== undefined);
+      // filter ---> hanya tampilkan kampus yang punya data UKT di golongan tersebut
+      const golIdx = parseInt(filterUkt) - 1;
+      data = data.filter((k) => k.ukt[golIdx] !== null && k.ukt[golIdx] !== undefined);
     }
 
     return data;
-  }, [matchedKampus, filterKota, filterUkt]);
+  }, [matchedKampus, filterProvinsi, filterUkt]);
 
   // pagination
   const totalPages = Math.ceil(filteredData.length / ITEMS_PER_PAGE);
@@ -118,7 +121,7 @@ export default function RekomendasiPage() {
   // reset page saat filter berubah
   useEffect(() => {
     setCurrentPage(1);
-  }, [filterKota, filterUkt]);
+  }, [filterProvinsi, filterUkt]);
 
   // proteksi: belum tes
   if (!hasResult) {
@@ -165,35 +168,31 @@ export default function RekomendasiPage() {
             {/* filter bar */}
             <div className="flex flex-col gap-3 rounded-2xl bg-white p-5 shadow-card sm:flex-row sm:items-center">
               <Select
-                placeholder="Semua Lokasi"
-                value={filterKota}
-                onChange={setFilterKota}
-                options={[{ value: "", label: "Semua Lokasi" }, ...kotaOptions]}
+                placeholder="Semua Provinsi"
+                value={filterProvinsi}
+                onChange={setFilterProvinsi}
+                options={provinsiOptions}
                 className="flex-1"
               />
               <Select
-                placeholder="Semua Kelompok"
+                placeholder="Semua Golongan"
                 value={filterUkt}
                 onChange={setFilterUkt}
                 options={[
-                  { value: "", label: "Semua Kelompok" },
-                  { value: "1", label: "Kelompok 1" },
-                  { value: "2", label: "Kelompok 2" },
-                  { value: "3", label: "Kelompok 3" },
-                  { value: "4", label: "Kelompok 4" },
-                  { value: "5", label: "Kelompok 5" },
-                  { value: "6", label: "Kelompok 6" },
-                  { value: "7", label: "Kelompok 7" },
-                  { value: "8", label: "Kelompok 8" },
-                  { value: "9", label: "Kelompok 9" },
-                  { value: "10", label: "Kelompok 10" },
-                  { value: "11", label: "Kelompok 11" },
+                  { value: "1", label: "Golongan I" },
+                  { value: "2", label: "Golongan II" },
+                  { value: "3", label: "Golongan III" },
+                  { value: "4", label: "Golongan IV" },
+                  { value: "5", label: "Golongan V" },
+                  { value: "6", label: "Golongan VI" },
+                  { value: "7", label: "Golongan VII" },
+                  { value: "8", label: "Golongan VIII" },
                 ]}
                 className="flex-1"
               />
               <button
                 onClick={() => {
-                  setFilterKota("");
+                  setFilterProvinsi("");
                   setFilterUkt("");
                 }}
                 className="rounded-xl border-2 border-[#c6c6cd] bg-white px-5 py-2.5 text-sm font-semibold text-[#45464d] transition-colors hover:border-[#006a61] hover:text-[#006a61] font-sans cursor-pointer"
@@ -207,7 +206,6 @@ export default function RekomendasiPage() {
         {/* --- grid kampus --- */}
         <section className="py-10 md:py-14">
           <div className="mx-auto max-w-6xl px-4 md:px-8">
-            {/* info jumlah */}
             <p className="mb-6 text-sm text-[#76777d] font-sans">
               Menampilkan {filteredData.length} program studi
             </p>
@@ -235,26 +233,24 @@ export default function RekomendasiPage() {
                       {kampus.programStudi}
                     </h3>
 
-                    {/* jenjang + rumpun */}
-                    <span className="mb-3 text-xs text-[#45464d] font-sans">
-                      {kampus.jenjang} · {kampus.rumpunKeilmuan}
-                    </span>
+                    {/* jenjang */}
+                    <span className="mb-3 text-xs text-[#45464d] font-sans">{kampus.jenjang}</span>
 
-                    {/* lokasi */}
+                    {/* provinsi */}
                     <span className="mb-1.5 flex items-center gap-2 text-xs text-[#45464d] font-sans">
                       <FaMapMarkerAlt size={11} className="shrink-0 text-[#006a61]" />
-                      {extractKota(kampus.lokasi)}
+                      {kampus.provinsi}
                     </span>
 
                     {/* ukt */}
                     {(() => {
                       if (filterUkt) {
-                        const kelIdx = parseInt(filterUkt) - 1;
-                        const nilai = kampus.ukt[kelIdx];
+                        const golIdx = parseInt(filterUkt) - 1;
+                        const nilai = kampus.ukt[golIdx];
                         return nilai !== null && nilai !== undefined ? (
                           <span className="mb-4 flex items-center gap-2 text-xs text-[#45464d] font-sans">
                             <FaMoneyBillWave size={11} className="shrink-0 text-[#006a61]" />
-                            Kelompok {filterUkt}: {formatRupiah(nilai)}
+                            Golongan {filterUkt}: {formatRupiah(nilai)}
                           </span>
                         ) : null;
                       }
