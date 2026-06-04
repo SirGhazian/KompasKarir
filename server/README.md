@@ -208,8 +208,12 @@ CMD ["node", "index.js"]
 
 ## Links
 
-| Service           | URL                                                                                            |
-| ----------------- | ---------------------------------------------------------------------------------------------- |
-| Backend Space     | [SirGhazian/kompaskarir-backend](https://huggingface.co/spaces/SirGhazian/kompaskarir-backend) |
-| AI Model Space    | [RidhoHamdani/kompaskarir-ai](https://huggingface.co/spaces/RidhoHamdani/kompaskarir-ai)       |
-| Frontend (GitHub) | [SirGhazian/kompas-karir](https://github.com/SirGhazian/kompas-karir)                          |
+| Deployment                    | URL                                                                                                           |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| Deployment Frontend (Vercel)  | [kompaskarir.vercel.app](https://kompaskarir.vercel.app)                                                     |
+| Deployment Backend (HuggingFace) | [SirGhazian/kompaskarir-backend](https://huggingface.co/spaces/SirGhazian/kompaskarir-backend)          |
+| Deployment AI Model (HuggingFace) | [RidhoHamdani/kompaskarir-ai](https://huggingface.co/spaces/RidhoHamdani/kompaskarir-ai)              |
+
+| Source Code  | URL                                          |
+| ------------ | -------------------------------------------- |
+| Main GitHub  | [KompasKarir](https://github.com/KompasKarir) |
