@@ -138,9 +138,12 @@ Proyek ini dikembangkan sebagai bagian dari program Coding Camp 2026 (Dicoding Ã
 
 ## Links
 
-| Service                | URL                                                                                            |
-| ---------------------- | ---------------------------------------------------------------------------------------------- |
-| Frontend (Vercel)      | [kompaskarir.vercel.app](https://kompaskarir.vercel.app)                                     |
-| Backend (Huggingface)  | [SirGhazian/kompaskarir-backend](https://huggingface.co/spaces/SirGhazian/kompaskarir-backend) |
-| AI Model (Huggingface) | [RidhoHamdani/kompaskarir-ai](https://huggingface.co/spaces/RidhoHamdani/kompaskarir-ai)       |
-| GitHub                 | [SirGhazian/kompas-karir](https://github.com/SirGhazian/kompas-karir)                          |
+| Deployment                    | URL                                                                                                           |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| Deployment Frontend (Vercel)  | [kompaskarir.vercel.app](https://kompaskarir.vercel.app)                                                     |
+| Deployment Backend (Hugging Face) | [SirGhazian/kompaskarir-backend](https://huggingface.co/spaces/SirGhazian/kompaskarir-backend)          |
+| Deployment AI Model (Hugging Face) | [RidhoHamdani/kompaskarir-ai](https://huggingface.co/spaces/RidhoHamdani/kompaskarir-ai)              |
+
+| All Source Code  | URL                                          |
+| ------------ | -------------------------------------------- |
+| Main GitHub Organization  | [KompasKarir](https://github.com/KompasKarir) |
