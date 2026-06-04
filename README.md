@@ -40,6 +40,10 @@ KompasKarir menggabungkan teori kepribadian Holland (RIASEC) dengan model machin
 | AI/ML     | TensorFlow + Gemini (Huggingface Spaces)             |
 | Deploy    | Vercel (frontend), Huggingface Spaces (backend + AI) |
 
+<img width="800" alt="diagram-solid" src="https://github.com/user-attachments/assets/d2960842-0ead-402d-be3c-1724a1f002a3" />
+
+> Gambaran umum bagaimana komponen KompasKarir saling terhubung - dari frontend > backend > hingga layer AI/ML.
+
 ## Memulai
 
 ### Prasyarat
