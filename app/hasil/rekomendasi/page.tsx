@@ -66,19 +66,21 @@ export default function RekomendasiPage() {
   }, []);
 
   // match prodi AI ke dataKampus
+  // Hanya gunakan 3 prodi teratas
   const matchedKampus = useMemo(() => {
     const results: KampusEntry[] = [];
-    for (const rek of rekomendasi) {
-      for (const prodi of rek.prodi_tersedia) {
-        const matches = matchProdiToKampus(prodi.program_name);
-        for (const m of matches) {
-          if (
-            !results.find(
-              (r) => r.universitas === m.universitas && r.programStudi === m.programStudi,
-            )
-          ) {
-            results.push(m);
-          }
+    if (rekomendasi.length === 0) return results;
+
+    const topProdi = rekomendasi[0].prodi_tersedia.slice(0, 3);
+    for (const prodi of topProdi) {
+      const matches = matchProdiToKampus(prodi.program_name);
+      for (const m of matches) {
+        if (
+          !results.find(
+            (r) => r.universitas === m.universitas && r.programStudi === m.programStudi,
+          )
+        ) {
+          results.push(m);
         }
       }
     }
